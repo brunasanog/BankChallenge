@@ -16,7 +16,7 @@ public class DatabaseConnection {
         try {
             return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
-            throw new SQLException("Error" + e.getMessage());
+            throw new SQLException("Failed to establish a database connection. Please check your database URL, username, or password. Error details: " + e.getMessage());
         }
     }
 
@@ -27,7 +27,7 @@ public class DatabaseConnection {
                 System.out.println("Connection established!");
             }
         } catch (SQLException e) {
-            System.out.println("Error" + e.getMessage());
+            System.out.println("Failed to establish a database connection. Please check your database URL, username, or password. Error details: " + e.getMessage());
         }
     }
 }
