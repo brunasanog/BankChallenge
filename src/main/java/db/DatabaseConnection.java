@@ -13,7 +13,11 @@ public class DatabaseConnection {
 
     //get the connection to the database
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        try {
+            return DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (SQLException e) {
+            throw new SQLException("Error" + e.getMessage());
+        }
     }
 
     //test the connection
