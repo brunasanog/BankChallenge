@@ -9,12 +9,12 @@ import service.AuthService;
 import service.UserService;
 
 public class App {
-    
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         mainMenu(scanner);
-        
+
         scanner.close();
         System.out.println("Application closed");
     }
@@ -38,36 +38,53 @@ public class App {
                     return;
 
                 case 2:
-
-                    System.out.print("Enter cpf:  ");
-                    String cpf = scanner.next();
-
-                    System.out.print("Enter username: ");
-                    String name = scanner.next();
-
-                    System.out.print("Enter email: ");
-                    String email = scanner.next();
-
-                    System.out.print("Enter phone number: ");
-                    String phone = scanner.next();
-
-                    System.out.print("Enter your birth date (dd/MM/yyyy): ");
-                    String birthDateInput = scanner.next();
-                    LocalDate birthDate = LocalDate.parse(birthDateInput, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-
-                    System.out.print("Enter account type (CHECKING, SAVINGS, SALARY): ");
-                    String accountTypeInput = scanner.next();
-
-                    System.out.print("Enter your password: ");
-                    String password = scanner.next();
-
                     UserService userService = new UserService();
-                    userService.createUser(cpf, name, email, phone, birthDate, accountTypeInput, password);
+                    AuthService authService = new AuthService();
+
+                    String cpf;
+                    while (true) {
+                        System.out.print("Enter cpf: ");
+                        cpf = scanner.next();
+
+                        if (authService.isCpfRegistered(cpf) != null) {
+                            System.out.println(authService.isCpfRegistered(cpf)); // Exibe a mensagem de erro
+                            break;
+                        }
+
+                        if (authService.validateCpfFormat(cpf) != null) {
+                            System.out.println(authService.validateCpfFormat(cpf));
+                            continue;
+                        }
+
+                        break;
+                    }
 
 
-                    System.out.println("Account Opening.");
+                    if (authService.isCpfRegistered(cpf) == null) {
+                        System.out.print("Enter username: ");
+                        String name = scanner.next();
+
+                        System.out.print("Enter email: ");
+                        String email = scanner.next();
+
+                        System.out.print("Enter phone number: ");
+                        String phone = scanner.next();
+
+                        System.out.print("Enter your birth date (dd/MM/yyyy): ");
+                        String birthDateInput = scanner.next();
+                        LocalDate birthDate = LocalDate.parse(birthDateInput, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+                        System.out.print("Enter account type (CHECKING, SAVINGS, SALARY): ");
+                        String accountTypeInput = scanner.next();
+
+                        System.out.print("Enter your password: ");
+                        String password = scanner.next();
+
+                        userService.createUser (cpf, name, email, phone, birthDate, accountTypeInput, password);
+
+                        System.out.println("Account Opening.");
+                    }
                     break;
-
 
                 case 0:
                     running = false;
@@ -125,5 +142,5 @@ public class App {
             }
         }
     }
-    
+
 }

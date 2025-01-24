@@ -1,39 +1,38 @@
 package service;
 
-import model.User;
-import util.PasswordUtil;
-import db.DatabaseConnection;
+import dao.UserDAO;
+import dao.UserDAOImplements;
 import model.AccountType;
-
-import java.sql.*;
 
 public class AuthService {
 
-    public String isCpfRegistered(String cpf) {
-        String sql = "SELECT COUNT(*) FROM user WHERE cpf = ?";
+    private final UserDAO userDAO = new UserDAOImplements();
 
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+    // Validação do formato do CPF
+    public String validateCpfFormat(String cpf){
 
-            stmt.setString(1, cpf);
-            ResultSet rs = stmt.executeQuery();
+        if (!cpf.matches("\\d+")) {
+            return "Invalid CPF: CPF must contain only numbers.";
+        }
 
-            if (rs.next()) {
-                int count = rs.getInt(1);
-                if (count > 0) {
-                    return "CPF already registered! Please use a different CPF or login.";
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Failed to check CPF: " + e.getMessage());
-            return "An error occurred while checking the CPF.";
+        if (cpf == null || cpf.length() != 11) {
+            return "Invalid CPF: CPF must have exactly 11 digits.";
         }
         return null;
     }
 
+    // Verifica se o CPF já está registrado
+    public String isCpfRegistered(String cpf) {
+        if (userDAO.isCpfRegistered(cpf)) {
+            return "CPF already registered! Please use a different CPF or login.";
+        }
+        return null;
+    }
+
+    // Valida o tipo de conta
     public String isValidAccountType(String accountTypeInput) {
         try {
-            AccountType.valueOf(accountTypeInput.toUpperCase());
+            AccountType.valueOf(accountTypeInput.toUpperCase());  // Verifica se o tipo de conta é válido
             return null;
         } catch (IllegalArgumentException e) {
             return "Invalid account type! Please choose CHECKING, SAVINGS, or SALARY.";

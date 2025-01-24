@@ -1,63 +1,57 @@
 package service;
 
-import db.DatabaseConnection;
+import dao.UserDAO;
+import dao.UserDAOImplements;
+import model.User;
 import util.PasswordUtil;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class UserService {
 
     private final AuthService authService = new AuthService();
+    private final UserDAO userDAO = new UserDAOImplements();
 
-    public void createUser(String cpf, String name, String email, String phone, LocalDate birthDate, String accountType, String password) {
+    public boolean createUser(String cpf, String name, String email, String phone, LocalDate birthDate, String accountType, String password) {
 
-        // Validação de CPF
+        // Valida o formato do CPF
+        String cpfFormatError = authService.validateCpfFormat(cpf);
+        if (cpfFormatError != null) {
+            System.out.println(cpfFormatError);
+            return false; // Retorna false se o CPF for inválido
+        }
+
+        // Valida se o CPF já existe
         String cpfError = authService.isCpfRegistered(cpf);
         if (cpfError != null) {
             System.out.println(cpfError);
-            return;
+            return false; // Retorna false se o CPF já estiver registrado
         }
 
         // Validação de tipo de conta
         String accountTypeError = authService.isValidAccountType(accountType);
         if (accountTypeError != null) {
             System.out.println(accountTypeError);
-            return;
+            return false; // Retorna false se o tipo de conta for inválido
         }
 
-        //Validação do formato da data
+        // Validação do formato da data
         if (birthDate == null) {
             System.out.println("Data de nascimento inválida.");
-            return;
+            return false; // Retorna false se a data de nascimento for inválida
         }
 
-        // SQL de inserção
-        String sql = "INSERT INTO user (cpf, name, email, phone, birth_date, account_type, password) VALUES (?,?,?,?,?,?,?)";
+        // Criar objeto User
+        User user = new User(
+                cpf,
+                name,
+                email,
+                phone,
+                birthDate,
+                accountType,
+                PasswordUtil.hashPassword(password)
+        );
 
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
-
-            stmt.setString(1, cpf);
-            stmt.setString(2, name);
-            stmt.setString(3, email);
-            stmt.setString(4, phone);
-            stmt.setDate(5, java.sql.Date.valueOf(birthDate));
-            stmt.setString(6, accountType);
-            stmt.setString(7, PasswordUtil.hashPassword(password));
-
-            int rowsAffected = stmt.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("User successfully created!");
-            } else {
-                System.out.println("Failed to create user.");
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Failed to create user: " + e.getMessage());
-        }
+        userDAO.create(user);
+        return true;
     }
-
 }
