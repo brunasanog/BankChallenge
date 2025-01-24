@@ -13,7 +13,7 @@ public class UserService {
 
     public boolean createUser(String cpf, String name, String email, String phone, LocalDate birthDate, String accountType, String password) {
 
-        // Valida o formato do CPF
+        /* Valida o formato do CPF
         String cpfFormatError = authService.validateCpfFormat(cpf);
         if (cpfFormatError != null) {
             System.out.println(cpfFormatError);
@@ -39,6 +39,8 @@ public class UserService {
             System.out.println("Invalid birth date.");
             return false;
         }
+        */
+
 
         // Criar objeto User
         User user = new User(
