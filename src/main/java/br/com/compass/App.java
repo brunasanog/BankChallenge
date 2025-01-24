@@ -1,6 +1,12 @@
 package br.com.compass;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+
+import model.AccountType;
+import service.AuthService;
+import service.UserService;
 
 public class App {
     
@@ -30,10 +36,39 @@ public class App {
                 case 1:
                     bankMenu(scanner);
                     return;
+
                 case 2:
-                    // ToDo...
+
+                    System.out.print("Enter cpf:  ");
+                    String cpf = scanner.next();
+
+                    System.out.print("Enter username: ");
+                    String name = scanner.next();
+
+                    System.out.print("Enter email: ");
+                    String email = scanner.next();
+
+                    System.out.print("Enter phone number: ");
+                    String phone = scanner.next();
+
+                    System.out.print("Enter your birth date (dd/MM/yyyy): ");
+                    String birthDateInput = scanner.next();
+                    LocalDate birthDate = LocalDate.parse(birthDateInput, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+                    System.out.print("Enter account type (CHECKING, SAVINGS, SALARY): ");
+                    String accountTypeInput = scanner.next();
+
+                    System.out.print("Enter your password: ");
+                    String password = scanner.next();
+
+                    UserService userService = new UserService();
+                    userService.createUser(cpf, name, email, phone, birthDate, accountTypeInput, password);
+
+
                     System.out.println("Account Opening.");
                     break;
+
+
                 case 0:
                     running = false;
                     break;
