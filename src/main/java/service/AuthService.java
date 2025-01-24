@@ -36,7 +36,7 @@ public class AuthService {
         return null;
     }
 
-    //NOME
+    //NAME
     public String validateName(String name) {
         if (name == null || name.trim().isEmpty()) {
             return "Invalid name: Name cannot be null or empty.";
@@ -125,7 +125,7 @@ public class AuthService {
         if (!password.matches(".*\\d.*")) {
             return "Invalid password: Password must contain at least one digit.";
         }
-        if (!password.matches(".*[@#$%^&+=!].*")) {
+        if (!password.matches(".*[@#$%^&+=!*].*")) {
             return "Invalid password: Password must contain at least one special character (@#$%^&+=!).";
         }
         return null;
