@@ -31,6 +31,7 @@ public class App {
             System.out.print("Choose an option: ");
 
             int option = scanner.nextInt();
+            scanner.nextLine();
 
             switch (option) {
                 case 1:
@@ -41,31 +42,48 @@ public class App {
                     UserService userService = new UserService();
                     AuthService authService = new AuthService();
 
+                    //CPF
                     String cpf;
                     while (true) {
                         System.out.print("Enter cpf: ");
-                        cpf = scanner.next();
+                        cpf = scanner.nextLine();
 
-                        if (authService.isCpfRegistered(cpf) != null) {
-                            System.out.println(authService.isCpfRegistered(cpf)); // Exibe a mensagem de erro
-                            break;
+                        String cpfValidationMessage = authService.validateCpfFormat(cpf);
+                        if (cpfValidationMessage != null) {
+                            System.out.println(cpfValidationMessage);
+                            continue;
                         }
 
-                        if (authService.validateCpfFormat(cpf) != null) {
-                            System.out.println(authService.validateCpfFormat(cpf));
-                            continue;
+                        if (authService.isCpfRegistered(cpf) != null) {
+                            System.out.println(authService.isCpfRegistered(cpf));
+                            break;
                         }
 
                         break;
                     }
 
+                    scanner.nextLine();
+
 
                     if (authService.isCpfRegistered(cpf) == null) {
-                        System.out.print("Enter username: ");
-                        String name = scanner.next();
+
+                        //NAME
+                        String name;
+                        while (true) {
+                            System.out.print("Enter username: ");
+                            name = scanner.nextLine();
+
+                            String nameValidationMessage = authService.validateName(name);
+                            if (nameValidationMessage != null) {
+                                System.out.println(nameValidationMessage);
+                                continue;
+                            }
+                            break;
+                        }
+
 
                         System.out.print("Enter email: ");
-                        String email = scanner.next();
+                        String email = scanner.nextLine();
 
                         System.out.print("Enter phone number: ");
                         String phone = scanner.next();

@@ -8,8 +8,12 @@ public class AuthService {
 
     private final UserDAO userDAO = new UserDAOImplements();
 
-    // Validação do formato do CPF
+    // CPF
     public String validateCpfFormat(String cpf){
+
+        if (cpf == null || cpf.trim().isEmpty()) {
+            return "Invalid CPF: CPF cannot be null or empty.";
+        }
 
         if (!cpf.matches("\\d+")) {
             return "Invalid CPF: CPF must contain only numbers.";
@@ -21,7 +25,6 @@ public class AuthService {
         return null;
     }
 
-    // Verifica se o CPF já está registrado
     public String isCpfRegistered(String cpf) {
         if (userDAO.isCpfRegistered(cpf)) {
             return "CPF already registered! Please use a different CPF or login.";
@@ -29,10 +32,21 @@ public class AuthService {
         return null;
     }
 
-    // Valida o tipo de conta
+    //NOME
+    public String validateName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return "Invalid name: Name cannot be null or empty.";
+        }
+        if (!name.matches("[\\p{L}\\s]+")) {
+            return "Invalid name: Name cannot contain numbers or special characters.";
+        }
+        return null;
+    }
+
+    // CONTA
     public String isValidAccountType(String accountTypeInput) {
         try {
-            AccountType.valueOf(accountTypeInput.toUpperCase());  // Verifica se o tipo de conta é válido
+            AccountType.valueOf(accountTypeInput.toUpperCase());
             return null;
         } catch (IllegalArgumentException e) {
             return "Invalid account type! Please choose CHECKING, SAVINGS, or SALARY.";

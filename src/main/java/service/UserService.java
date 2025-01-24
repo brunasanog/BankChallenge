@@ -17,27 +17,27 @@ public class UserService {
         String cpfFormatError = authService.validateCpfFormat(cpf);
         if (cpfFormatError != null) {
             System.out.println(cpfFormatError);
-            return false; // Retorna false se o CPF for inválido
+            return false;
         }
 
         // Valida se o CPF já existe
         String cpfError = authService.isCpfRegistered(cpf);
         if (cpfError != null) {
             System.out.println(cpfError);
-            return false; // Retorna false se o CPF já estiver registrado
+            return false;
         }
 
         // Validação de tipo de conta
         String accountTypeError = authService.isValidAccountType(accountType);
         if (accountTypeError != null) {
             System.out.println(accountTypeError);
-            return false; // Retorna false se o tipo de conta for inválido
+            return false;
         }
 
         // Validação do formato da data
         if (birthDate == null) {
-            System.out.println("Data de nascimento inválida.");
-            return false; // Retorna false se a data de nascimento for inválida
+            System.out.println("Invalid birth date.");
+            return false;
         }
 
         // Criar objeto User
