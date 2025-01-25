@@ -4,6 +4,7 @@ import java.util.Scanner;
 import ui.UserInteraction;
 import service.AuthService;
 import service.UserService;
+import util.ValidationUtil;
 
 public class App {
 
@@ -20,7 +21,8 @@ public class App {
         boolean running = true;
         UserService userService = new UserService();
         AuthService authService = new AuthService();
-        UserInteraction userInteraction = new UserInteraction(scanner, userService, authService);
+        ValidationUtil validationUtil = new ValidationUtil();
+        UserInteraction userInteraction = new UserInteraction(scanner, userService, authService, validationUtil);
 
         while (running) {
             System.out.println("========= Main Menu =========");
@@ -36,8 +38,7 @@ public class App {
             switch (option) {
                 case 1:
                     userInteraction.login();
-                    //bankMenu(scanner);
-                    return;
+                    break;
 
                 case 2:
                     userInteraction.openAccount();

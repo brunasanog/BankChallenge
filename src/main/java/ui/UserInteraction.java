@@ -7,6 +7,9 @@ import java.util.Scanner;
 import model.User;
 import service.AuthService;
 import service.UserService;
+import util.ValidationUtil;
+
+import static br.com.compass.App.bankMenu;
 
 //----------------------------CREATE ACCOUNT----------------------------
 public class UserInteraction {
@@ -14,11 +17,13 @@ public class UserInteraction {
     private final Scanner scanner;
     private final UserService userService;
     private final AuthService authService;
+    public final ValidationUtil validationUtil;
 
-    public UserInteraction(Scanner scanner, UserService userService, AuthService authService) {
+    public UserInteraction(Scanner scanner, UserService userService, AuthService authService, ValidationUtil validationUtil) {
         this.scanner = scanner;
         this.userService = userService;
         this.authService = authService;
+        this.validationUtil = validationUtil;
     }
 
     public void openAccount() {
@@ -28,14 +33,11 @@ public class UserInteraction {
             System.out.print("Enter cpf: ");
             cpf = scanner.nextLine();
 
-            String cpfValidationMessage = authService.validateCpfFormat(cpf);
-            if (cpfValidationMessage != null) {
-                System.out.println(cpfValidationMessage);
+            if (!validationUtil.cpfFormat(cpf)) {
                 continue;
             }
 
-            if (authService.isCpfRegistered(cpf) != null) {
-                System.out.println(authService.isCpfRegistered(cpf));
+            if (!validationUtil.cpfRegistered(cpf)) {
                 return;
             }
 
@@ -137,19 +139,35 @@ public class UserInteraction {
     }
 
     //----------------------------LOGIN----------------------------
-
     public void login() {
-        System.out.print("Enter CPF: ");
-        String cpf = scanner.nextLine();
+        boolean loggedIn = false;
 
-        System.out.print("Enter password: ");
-        String password = scanner.nextLine();
+        while (!loggedIn) {
+            System.out.print("Enter CPF: ");
+            String cpf = scanner.nextLine();
 
-        User user = userService.login(cpf, password);
-        if (user != null) {
-            System.out.println("Login successful! Welcome, " + user.getName() + "!");
-        } else {
-            System.out.println("Invalid CPF or password. Please try again.");
+            if (!validationUtil.cpfFormat(cpf)) {
+                continue;
+            }
+
+            System.out.print("Enter password: ");
+            String password = scanner.nextLine();
+
+            User user = userService.login(cpf, password);
+            if (user != null) {
+                System.out.println("Login successful! Welcome, " + user.getName() + "!");
+                loggedIn = true;
+                bankMenu(scanner);
+            } else {
+                System.out.println("Invalid CPF or password. Please try again.");
+                System.out.print("Would you like to try again? (yes/no): ");
+                String choice = scanner.nextLine();
+
+                if (choice.equalsIgnoreCase("no")) {
+                    System.out.println("Returning to the main menu...");
+                    break;
+                }
+            }
         }
-    }
+}
 }
