@@ -134,7 +134,7 @@ public class UserInteraction {
         }
 
         // ACCOUNT CREATED
-        userService.createUser (cpf, name, email, phone, birthDate, accountTypeInput, password);
+        userService.createUser(cpf, name, email, phone, birthDate, accountTypeInput, password);
         System.out.println("Account Opening.");
     }
 
@@ -169,5 +169,5 @@ public class UserInteraction {
                 }
             }
         }
-}
+    }
 }

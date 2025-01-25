@@ -13,7 +13,7 @@ public class AuthService {
     private final UserDAO userDAO = new UserDAO();
 
     // CPF
-    public String validateCpfFormat(String cpf){
+    public String validateCpfFormat(String cpf) {
 
         if (cpf == null || cpf.trim().isEmpty()) {
             return "Invalid CPF: CPF cannot be null or empty.";
@@ -112,7 +112,7 @@ public class AuthService {
     }
 
 
-        // ACCOUNT TYPE
+    // ACCOUNT TYPE
     public String isValidAccountType(String accountTypeInput) {
         if (accountTypeInput == null || accountTypeInput.trim().isEmpty()) {
             return "Invalid account type: Account type cannot be null or empty.";

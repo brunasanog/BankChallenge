@@ -1,6 +1,7 @@
 package br.com.compass;
 
 import java.util.Scanner;
+
 import ui.UserInteraction;
 import service.AuthService;
 import service.UserService;

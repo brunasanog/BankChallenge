@@ -81,5 +81,5 @@ public class UserDAO {
             System.out.println("Error while finding user by CPF: " + e.getMessage());
         }
         return user;
-}
+    }
 }

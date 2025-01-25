@@ -4,17 +4,17 @@ import dao.AccountDAO;
 import dao.UserDAO;
 import model.User;
 import util.PasswordUtil;
+
 import java.time.LocalDate;
 
 public class UserService {
 
     private final UserDAO userDAO = new UserDAO();
-    private final AccountDAO accountDAO= new AccountDAO();
+    private final AccountDAO accountDAO = new AccountDAO();
     private final AccountService accountService = new AccountService();
 
 
-
-    public boolean createUser (String cpf, String name, String email, String phone, LocalDate birthDate, String accountType, String password) {
+    public boolean createUser(String cpf, String name, String email, String phone, LocalDate birthDate, String accountType, String password) {
         // CREATE USER
         User user = new User(
                 cpf,
