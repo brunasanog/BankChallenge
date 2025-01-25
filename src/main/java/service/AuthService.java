@@ -7,6 +7,7 @@ import model.AccountType;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class AuthService {
 
@@ -43,6 +44,9 @@ public class AuthService {
         }
         if (!name.matches("[\\p{L}\\s]+")) {
             return "Invalid name: Name cannot contain numbers or special characters.";
+        }
+        if (name.length() < 03) {
+            return "Invalid name: Name must be at least 3 characters long.";
         }
         return null;
     }
@@ -82,19 +86,34 @@ public class AuthService {
         if (birthDateInput == null || birthDateInput.trim().isEmpty()) {
             return "Invalid birth date: Birth date cannot be null or empty.";
         }
+
         try {
-            LocalDate birthDate = LocalDate.parse(birthDateInput, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate birthDate = LocalDate.parse(birthDateInput, formatter);
+
             int age = Period.between(birthDate, LocalDate.now()).getYears();
+            int currentYear = LocalDate.now().getYear();
+
+            if (birthDate.getYear() < 1900 || birthDate.getYear() > currentYear) {
+                return "Invalid birth date: Year must be between 1900 and the current year.";
+            }
+
+            if (birthDate.isAfter(LocalDate.now())) {
+                return "Invalid birth date: Birth date cannot be in the future.";
+            }
+
             if (age < 18) {
                 return "Invalid birth date: User must be at least 18 years old.";
             }
-        } catch (Exception e) {
-            return "Invalid birth date: Please use the format dd/MM/yyyy.";
+
+        } catch (DateTimeParseException e) {
+            return "Invalid birth date: Please use a valid format and ensure the date is correct (dd/MM/yyyy).";
         }
         return null;
     }
 
-    // ACCOUNT
+
+        // ACCOUNT
     public String isValidAccountType(String accountTypeInput) {
         if (accountTypeInput == null || accountTypeInput.trim().isEmpty()) {
             return "Invalid account type: Account type cannot be null or empty.";

@@ -88,7 +88,7 @@ public class UserInteraction {
         LocalDate birthDate = null;
 
         while (true) {
-            System.out.print("Enter your birth date (DD/MM/YYYY): ");
+            System.out.print("Enter your birth date (dd/MM/yyyy): ");
             birthDateInput = scanner.nextLine();
 
             String birthDateValidationMessage = authService.validateBirthDate(birthDateInput);
