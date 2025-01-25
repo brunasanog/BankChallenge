@@ -35,7 +35,8 @@ public class App {
 
             switch (option) {
                 case 1:
-                    bankMenu(scanner);
+                    userInteraction.login();
+                    //bankMenu(scanner);
                     return;
 
                 case 2:

@@ -55,4 +55,31 @@ public class UserDAO {
         }
         return false;
     }
+
+    public User findByCpf(String cpf) {
+        String sql = "SELECT * FROM user WHERE cpf = ?";
+        User user = null;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, cpf);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                user = new User(
+                        rs.getString("cpf"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getDate("birth_date").toLocalDate(),
+                        rs.getString("account_type"),
+                        rs.getString("password")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while finding user by CPF: " + e.getMessage());
+        }
+        return user;
+}
 }

@@ -36,4 +36,13 @@ public class UserService {
             return false;
         }
     }
+
+    //LOGIN
+    public User login(String cpf, String password) {
+        User user = userDAO.findByCpf(cpf);
+        if (user != null && PasswordUtil.checkPassword(password, user.getPassword())) {
+            return user;
+        }
+        return null;
+    }
 }

@@ -4,10 +4,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+import model.User;
 import service.AuthService;
 import service.UserService;
 
-//CREATE ACCOUNT
+//----------------------------CREATE ACCOUNT----------------------------
 public class UserInteraction {
 
     private final Scanner scanner;
@@ -133,5 +134,22 @@ public class UserInteraction {
         // ACCOUNT CREATED
         userService.createUser (cpf, name, email, phone, birthDate, accountTypeInput, password);
         System.out.println("Account Opening.");
+    }
+
+    //----------------------------LOGIN----------------------------
+
+    public void login() {
+        System.out.print("Enter CPF: ");
+        String cpf = scanner.nextLine();
+
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
+        User user = userService.login(cpf, password);
+        if (user != null) {
+            System.out.println("Login successful! Welcome, " + user.getName() + "!");
+        } else {
+            System.out.println("Invalid CPF or password. Please try again.");
+        }
     }
 }
