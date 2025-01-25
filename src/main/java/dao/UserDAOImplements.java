@@ -10,7 +10,7 @@ public class UserDAOImplements implements UserDAO {
     @Override
     public int create(User user) {
         String sql = "INSERT INTO user (cpf, name, email, phone, birth_date, account_type, password) VALUES (?,?,?,?,?,?,?)";
-        int generatedId = -1; // Adicione o ponto e vírgula aqui
+        int generatedId = -1;
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) { // Adicione RETURN_GENERATED_KEYS
