@@ -7,16 +7,14 @@ public class Account {
     private int userId;
     private double balance;
     private String accountType;
-    public String authorizedSource;
 
     public Account() {
     }
 
-    public Account(int UserId, double balance, String accountType, String authorizedSource) {
+    public Account(int UserId, double balance, String accountType) {
         this.userId = UserId;
         this.balance = balance;
         this.accountType = accountType;
-        this.authorizedSource = authorizedSource;
     }
 
     public int getUserId() {
@@ -43,11 +41,4 @@ public class Account {
         this.accountType = accountType;
     }
 
-    public String getAuthorizedSource() {
-        return authorizedSource;
-    }
-
-    public void setAuthorizedSource(String authorizedSource) {
-        this.authorizedSource = authorizedSource;
-    }
 }

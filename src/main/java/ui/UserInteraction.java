@@ -130,7 +130,7 @@ public class UserInteraction {
             break;
         }
 
-        // CREATING ACCOUNT
+        // ACCOUNT CREATED
         userService.createUser (cpf, name, email, phone, birthDate, accountTypeInput, password);
         System.out.println("Account Opening.");
     }

@@ -1,7 +1,6 @@
 package service;
 
 import dao.UserDAO;
-import dao.UserDAOImplements;
 import model.AccountType;
 
 import java.time.LocalDate;
@@ -11,7 +10,7 @@ import java.time.format.DateTimeParseException;
 
 public class AuthService {
 
-    private final UserDAO userDAO = new UserDAOImplements();
+    private final UserDAO userDAOImplements = new UserDAO();
 
     // CPF
     public String validateCpfFormat(String cpf){
@@ -31,7 +30,7 @@ public class AuthService {
     }
 
     public String isCpfRegistered(String cpf) {
-        if (userDAO.isCpfRegistered(cpf)) {
+        if (userDAOImplements.isCpfRegistered(cpf)) {
             return "CPF already registered! Please use a different CPF or login.";
         }
         return null;
@@ -113,7 +112,7 @@ public class AuthService {
     }
 
 
-        // ACCOUNT
+        // ACCOUNT TYPE
     public String isValidAccountType(String accountTypeInput) {
         if (accountTypeInput == null || accountTypeInput.trim().isEmpty()) {
             return "Invalid account type: Account type cannot be null or empty.";
