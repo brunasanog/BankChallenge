@@ -1,18 +1,18 @@
-/* package service;
+package service;
 
-import java.sql.SQLException;
+import dao.AccountDAO;
 import model.Account;
-import db.DatabaseConnection;
-
-import java.sql.*;
-
 
 public class AccountService {
 
-    public void createAccount() {
+    private final AccountDAO accountDAO = new AccountDAO();
 
+    public void createAccount(int userId, String accountType) {
+        Account account = new Account(userId, 0.0, accountType);
+        accountDAO.createAccount(account);
     }
 
+    /*
     public double checkBalance(){
 
     }
@@ -28,6 +28,6 @@ public class AccountService {
     public void transfer(){
 
     }
+*/
 
-
-}*/
+}
