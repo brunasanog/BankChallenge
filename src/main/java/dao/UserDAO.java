@@ -3,6 +3,6 @@ package dao;
 import model.User;
 
 public interface UserDAO {
-    void create(User user);
+    int create(User user);
     boolean isCpfRegistered(String cpf);
 }

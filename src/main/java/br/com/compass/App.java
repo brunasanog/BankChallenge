@@ -40,6 +40,7 @@ public class App {
 
                 case 2:
                     userInteraction.openAccount();
+                    running = false;
                     break;
 
                 case 0:
