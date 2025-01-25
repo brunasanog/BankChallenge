@@ -10,7 +10,7 @@ import java.time.format.DateTimeParseException;
 
 public class AuthService {
 
-    private final UserDAO userDAOImplements = new UserDAO();
+    private final UserDAO userDAO = new UserDAO();
 
     // CPF
     public String validateCpfFormat(String cpf){
@@ -30,7 +30,7 @@ public class AuthService {
     }
 
     public String isCpfRegistered(String cpf) {
-        if (userDAOImplements.isCpfRegistered(cpf)) {
+        if (userDAO.isCpfRegistered(cpf)) {
             return "CPF already registered! Please use a different CPF or login.";
         }
         return null;
