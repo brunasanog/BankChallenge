@@ -49,8 +49,7 @@ public class AccountService {
             TransactionDAO transactionDAO = new TransactionDAO();
             transactionDAO.createTransaction(transaction);
 
-            System.out.printf("\nDeposit of R$%.2f successfully made to account ID: %d%n" +
-                                "Your new balance is: R$%.2f%n", amount, accountId, account.getBalance());
+            System.out.printf("\nDeposit of R$%.2f successfully made to account ID: %d%n", amount, accountId);
         } else {
             System.out.println("Account not found.");
         }
@@ -78,10 +77,9 @@ public class AccountService {
             TransactionDAO transactionDAO = new TransactionDAO();
             transactionDAO.createTransaction(transaction);
 
-            System.out.printf("Withdraw of R$%.2f successfully made from account ID: %d%n" +
-                    "Your new balance is: R$%.2f%n", amount, accountId, account.getBalance());
+            System.out.printf("Withdraw of R$%.2f successfully made from account ID: %d%n", amount, accountId);
         } else {
-            System.out.println("Account not found.");
+            System.out.println("Account not found.\n");
         }
     }
 
@@ -92,7 +90,7 @@ public class AccountService {
         if (account != null) {
             return account.getBalance();
         } else {
-            System.out.println("Account not found.");
+            System.out.println("Account not found.\n");
             return 0.0;
         }
     }
@@ -103,22 +101,22 @@ public class AccountService {
         Account targetAccount = accountDAO.getAccountById(targetAccountId);
 
         if (sourceAccount == null) {
-            System.out.println("Source account not found.");
+            System.out.println("Source account not found.\n");
             return;
         }
 
         if (targetAccount == null) {
-            System.out.println("Target account not found.");
+            System.out.println("Target account not found.\n");
             return;
         }
 
         if (amount <= 0) {
-            System.out.println("The transfer amount must be positive.");
+            System.out.println("The transfer amount must be positive.\n");
             return;
         }
 
         if (amount > sourceAccount.getBalance()) {
-            System.out.println("Insufficient funds for this transfer.");
+            System.out.println("Insufficient funds for this transfer.\n");
             return;
         }
 
@@ -132,8 +130,7 @@ public class AccountService {
         TransactionDAO transactionDAO = new TransactionDAO();
         transactionDAO.createTransaction(transaction);
 
-        System.out.printf("Transfer of R$%.2f successfully made from account ID: %d to account ID: %d%n" +
-                "Your new balance is: R$%.2f%n", amount, sourceAccountId, targetAccountId, sourceAccount.getBalance());
+        System.out.printf("\nTransfer of R$%.2f successfully made from account ID: %d to account ID: %d%n", amount, sourceAccountId, targetAccountId);
     }
 
     //RETURN ALL COUNTS FROM USER

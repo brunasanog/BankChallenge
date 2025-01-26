@@ -22,14 +22,14 @@ public class UserInteraction {
 
     private final Scanner scanner;
     private final UserService userService;
-    private final ValidationService authService;
+    private final ValidationService validationService;
     private final AccountService accountService;
     public final ValidationUtil validationUtil;
 
-    public UserInteraction(Scanner scanner, UserService userService, ValidationService authService, AccountService accountService, ValidationUtil validationUtil) {
+    public UserInteraction(Scanner scanner, UserService userService, ValidationService validationService, AccountService accountService, ValidationUtil validationUtil) {
         this.scanner = scanner;
         this.userService = userService;
-        this.authService = authService;
+        this.validationService = validationService;
         this.accountService = accountService;
         this.validationUtil = validationUtil;
     }
@@ -59,7 +59,7 @@ public class UserInteraction {
             System.out.print("Enter username: ");
             name = scanner.nextLine();
 
-            String nameValidationMessage = authService.validateName(name);
+            String nameValidationMessage = validationService.validateName(name);
             if (nameValidationMessage != null) {
                 System.out.println(nameValidationMessage);
                 continue;
@@ -73,7 +73,7 @@ public class UserInteraction {
             System.out.print("Enter email: ");
             email = scanner.nextLine();
 
-            String emailValidationMessage = authService.validateEmail(email);
+            String emailValidationMessage = validationService.validateEmail(email);
             if (emailValidationMessage != null) {
                 System.out.println(emailValidationMessage);
                 continue;
@@ -87,7 +87,7 @@ public class UserInteraction {
             System.out.print("Enter phone number (DDD + XXXXXXXX): ");
             phone = scanner.nextLine();
 
-            String phoneValidationMessage = authService.validatePhone(phone);
+            String phoneValidationMessage = validationService.validatePhone(phone);
             if (phoneValidationMessage != null) {
                 System.out.println(phoneValidationMessage);
                 continue;
@@ -103,7 +103,7 @@ public class UserInteraction {
             System.out.print("Enter your birth date (dd/MM/yyyy): ");
             birthDateInput = scanner.nextLine();
 
-            String birthDateValidationMessage = authService.validateBirthDate(birthDateInput);
+            String birthDateValidationMessage = validationService.validateBirthDate(birthDateInput);
             if (birthDateValidationMessage != null) {
                 System.out.println(birthDateValidationMessage);
                 continue;
@@ -119,7 +119,7 @@ public class UserInteraction {
             System.out.print("Enter account type (CHECKING, SAVINGS, SALARY): ");
             accountTypeInput = scanner.nextLine();
 
-            String accountTypeValidationMessage = authService.validateAccountType(accountTypeInput);
+            String accountTypeValidationMessage = validationService.validateAccountType(accountTypeInput);
             if (accountTypeValidationMessage != null) {
                 System.out.println(accountTypeValidationMessage);
                 continue;
@@ -134,7 +134,7 @@ public class UserInteraction {
             System.out.print("Enter your password: ");
             password = scanner.nextLine();
 
-            String passwordValidationMessage = authService.validatePassword(password);
+            String passwordValidationMessage = validationService.validatePassword(password);
             if (passwordValidationMessage != null) {
                 System.out.println(passwordValidationMessage);
                 continue;
@@ -152,7 +152,7 @@ public class UserInteraction {
         boolean loggedIn = false;
 
         while (!loggedIn) {
-            System.out.print("Enter CPF: ");
+            System.out.print("\nEnter CPF: ");
             String cpf = scanner.nextLine();
 
             if (!validationUtil.cpfFormat(cpf)) {
@@ -164,8 +164,7 @@ public class UserInteraction {
 
             User user = userService.login(cpf, password);
             if (user != null) {
-                System.out.println("\nLogin successful! Welcome, " + user.getName() + "!\n");
-
+                System.out.println("\nLogin successful! Welcome, " + user.getName() + "!");
 
                 List<Account> accounts = accountService.getAccountsByUserId(user.getId());
 
@@ -232,7 +231,7 @@ public class UserInteraction {
                 continue;
             }
             
-            String validationMessage = authService.validateDepositAmount(amount);
+            String validationMessage = validationService.validateDepositAmount(amount);
             if (validationMessage != null) {
                 System.out.println(validationMessage);
                 continue; 
@@ -249,11 +248,11 @@ public class UserInteraction {
         double currentBalance = accountService.checkBalance(account.getId());
 
         while (true) {
-            System.out.print("\nEnter the amount to withdraw: ");
+            System.out.print("Enter the amount to withdraw: ");
             String input = scanner.nextLine().trim();
 
             if (input.isEmpty()) {
-                System.out.println("\nInvalid input: Please enter a valid number.");
+                System.out.println("Invalid input: Please enter a valid number.\n");
                 continue;
             }
 
@@ -262,18 +261,17 @@ public class UserInteraction {
             try {
                 amount = Double.parseDouble(input);
             } catch (NumberFormatException e) {
-                System.out.println("\nInvalid input: Please enter a valid number.");
+                System.out.println("\nInvalid input: Please enter a valid number.\n");
                 continue;
             }
 
-            String validationMessage = authService.validateWithdrawAmount(amount, currentBalance);
+            String validationMessage = validationService.validateWithdrawAmount(amount, currentBalance);
             if (validationMessage != null) {
                 System.out.println(validationMessage);
                 continue;
             }
 
             accountService.withdrawFromAccount(account.getId(), amount);
-            System.out.printf("Withdraw of R$%.2f successfully made from account ID: %d%n\n", amount, account.getId());
             break;
         }
     }
@@ -281,7 +279,7 @@ public class UserInteraction {
     //----------------------------CHECK BALANCE----------------------------
     public void checkBalance(Account account) {
         double balance = accountService.checkBalance(account.getId());
-        System.out.printf("\nYour current balance is: R$%.2f%n", balance);
+        System.out.printf("Your current balance is: R$%.2f%n", balance);
     }
 
     //----------------------------TRANSFER----------------------------
@@ -289,7 +287,7 @@ public class UserInteraction {
         String accountType = accountService.getAccountTypeById(sourceAccount.getId());
 
         if (accountType == null) {
-            System.out.println("\nAccount not found.");
+            System.out.println("Account not found.\n");
             return;
         }
 
@@ -298,29 +296,23 @@ public class UserInteraction {
             return;
         }
 
-        boolean transferSuccessful = false;
-
-        while (!transferSuccessful) {
-
-        }
-
-        System.out.print("\nEnter the target account ID: ");
+        System.out.print("Enter the target account ID: ");
         int targetAccountId = scanner.nextInt();
         scanner.nextLine();
 
         if (targetAccountId == sourceAccount.getId()) {
-            System.out.println("\nInvalid operation: You cannot transfer money to the same account.");
+            System.out.println("Invalid operation: You cannot transfer money to the same account.\n");
             return;
         }
 
         Account targetAccount = accountService.getAccountById(targetAccountId);
-        String accountValidationMessage = authService.validateAccountExistence(targetAccount);
+        String accountValidationMessage = validationService.validateAccountExistence(targetAccount);
         if (accountValidationMessage != null) {
             System.out.println(accountValidationMessage);
             return;
         }
 
-        System.out.print("\nEnter the amount to transfer: ");
+        System.out.print("Enter the amount to transfer: ");
         String input = scanner.nextLine().trim();
 
         if (input.isEmpty()) {
@@ -343,7 +335,7 @@ public class UserInteraction {
             return;
         }
 
-        String validationMessage = authService.validateTransferAmount(amount);
+        String validationMessage = validationService.validateTransferAmount(amount);
         if (validationMessage != null) {
             System.out.println(validationMessage);
             return;
@@ -393,7 +385,7 @@ public class UserInteraction {
                 continue;
             }
 
-            String accountTypeValidationMessage = authService.validateAccountType(accountTypeInput);
+            String accountTypeValidationMessage = validationService.validateAccountType(accountTypeInput);
             if (accountTypeValidationMessage != null) {
                 System.out.println(accountTypeValidationMessage);
                 continue;

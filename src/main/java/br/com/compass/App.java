@@ -36,7 +36,7 @@ public class App {
             System.out.println("|| 2. Account Opening      ||");
             System.out.println("|| 0. Exit                 ||");
             System.out.println("=============================");
-            System.out.print("Choose an option: \n");
+            System.out.print("Choose an option:");
 
             try {
                 int option = scanner.nextInt();
@@ -85,7 +85,7 @@ public class App {
                     selectedAccount.getAccountType(),
                     selectedAccount.getBalance());
 
-            System.out.print("Choose an option: \n");
+            System.out.print("Choose an option:");
 
             try {
                 int option = scanner.nextInt();

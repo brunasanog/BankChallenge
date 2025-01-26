@@ -165,10 +165,10 @@ public class ValidationService {
     //VALIDATE WITHDRAW
     public String validateWithdrawAmount(double amount, double currentBalance) {
         if (amount <= 0) {
-            return "Invalid amount: Withdraw amount must be greater than zero.";
+            return "Invalid amount: Withdraw amount must be greater than zero.\n";
         }
         if (amount > currentBalance) {
-            return "Invalid amount: Withdraw amount cannot exceed the current balance.";
+            return "Invalid amount: Withdraw amount cannot exceed the current balance.\n";
         }
         return null;
     }
@@ -176,7 +176,7 @@ public class ValidationService {
     // VALIDATE TRANSFER
     public String validateTransferAmount(double amount) {
         if (amount <= 0) {
-            return "Invalid amount: Transfer amount must be greater than zero.";
+            return "Invalid amount: Transfer amount must be greater than zero.\n";
         }
         return null;
     }
@@ -184,7 +184,7 @@ public class ValidationService {
     // VALIDATE ACCOUNT
     public String validateAccountExistence(Account account) {
         if (account == null) {
-            return "Invalid account: Account does not exist.";
+            return "Invalid account: Account does not exist.\n";
         }
         return null;
     }

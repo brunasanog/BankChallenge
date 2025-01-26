@@ -25,7 +25,7 @@ public class AccountDAO {
                 ResultSet generatedKeys = stmt.getGeneratedKeys();
                 if (generatedKeys.next()) {
                     account.setId(generatedKeys.getInt(1));
-                    System.out.println("Account created with ID: " + account.getId());
+                    System.out.println("\nAccount created with ID: " + account.getId());
                 }
             }
         } catch (SQLException e) {
