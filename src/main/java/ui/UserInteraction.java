@@ -173,7 +173,7 @@ public class UserInteraction {
                 }
 
                 loggedIn = true;
-                bankMenu(scanner);
+                bankMenu(scanner, user, this);
             } else {
                 System.out.println("Invalid CPF or password. Please try again.");
                 System.out.print("Would you like to try again? (yes/no): ");
@@ -188,7 +188,12 @@ public class UserInteraction {
     }
 
     //----------------------------DEPOSIT----------------------------
-
+    public void deposit(Account account) {
+        System.out.print("Enter the amount to deposit: ");
+        double amount = scanner.nextDouble();
+        scanner.nextLine();
+        accountService.depositToAccount(account.getId(), amount);
+    }
 
 
 

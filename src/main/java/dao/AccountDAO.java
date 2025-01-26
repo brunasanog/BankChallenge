@@ -7,6 +7,7 @@ import java.sql.*;
 
 public class AccountDAO {
 
+    //CREATE ACCOUNT
     public void createAccount(Account account) {
         String sql = "INSERT INTO account (user_id, balance, account_type) VALUES (?, ?, ?)";
 
@@ -30,6 +31,7 @@ public class AccountDAO {
         }
     }
 
+    //GET ACCOUNT BY USER ID
     public Account getAccountByUserId(int userId) {
         String sql = "SELECT * FROM account WHERE user_id = ?";
         Account account = null;
@@ -54,6 +56,18 @@ public class AccountDAO {
         return account;
     }
 
+    //UPDATE
+    public void updateAccount(Account account) {
+        String sql = "UPDATE account SET balance = ? WHERE id = ?";
 
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
 
+            stmt.setDouble(1, account.getBalance());
+            stmt.setInt(2, account.getId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error while updating account: " + e.getMessage());
+        }
+    }
 }

@@ -2,6 +2,8 @@ package br.com.compass;
 
 import java.util.Scanner;
 
+import model.Account;
+import model.User;
 import service.AccountService;
 import ui.UserInteraction;
 import service.AuthService;
@@ -56,8 +58,9 @@ public class App {
         }
     }
 
-    public static void bankMenu(Scanner scanner) {
+    public static void bankMenu(Scanner scanner, User user, UserInteraction userInteraction) {
         boolean running = true;
+        AccountService accountService = new AccountService();
 
         while (running) {
             System.out.println("========= Bank Menu =========");
@@ -74,7 +77,9 @@ public class App {
 
             switch (option) {
                 case 1:
-                    // ToDo...
+
+                    Account account = accountService.getAccountByUserId(user.getId());
+                    userInteraction.deposit(account);
                     System.out.println("Deposit.");
                     break;
                 case 2:
