@@ -33,6 +33,7 @@ public class UserInteraction {
         this.validationUtil = validationUtil;
     }
 
+
     public void openAccount() {
         // CPF
         String cpf;
@@ -220,13 +221,39 @@ public class UserInteraction {
         }
     }
 
-
     //----------------------------WITHDRAW----------------------------
     public void withdraw(Account account) {
-        System.out.print("Enter the amount to withdraw: ");
-        double amount = scanner.nextDouble();
         scanner.nextLine();
-        accountService.withdrawFromAccount(account.getId(), amount);
+        double currentBalance = accountService.checkBalance(account.getId());
+
+        while (true) {
+            System.out.print("Enter the amount to withdraw: ");
+            String input = scanner.nextLine().trim();
+
+            if (input.isEmpty()) {
+                System.out.println("Invalid input: Please enter a valid number.");
+                continue;
+            }
+
+            double amount;
+
+            try {
+                amount = Double.parseDouble(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input: Please enter a valid number.");
+                continue;
+            }
+
+            String validationMessage = authService.validateWithdrawAmount(amount, currentBalance);
+            if (validationMessage != null) {
+                System.out.println(validationMessage);
+                continue;
+            }
+
+            accountService.withdrawFromAccount(account.getId(), amount);
+            System.out.printf("Withdrawal of R$%.2f successfully made from account ID: %d%n", amount, account.getId());
+            break;
+        }
     }
 
     //----------------------------CHECK BALANCE----------------------------

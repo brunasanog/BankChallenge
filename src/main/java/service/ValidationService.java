@@ -150,13 +150,24 @@ public class ValidationService {
         return null;
     }
 
-    //DEPOSIT
+    //VALIDATE DEPOSIT
     public String validateDepositAmount(Double amount) {
         if (amount == null) {
             return "Invalid amount: Amount cannot be null.";
         }
         if (amount <= 0) {
             return "Invalid amount: Amount must be greater than zero.";
+        }
+        return null;
+    }
+
+    //VALIDATE WITHDRAW
+    public String validateWithdrawAmount(double amount, double currentBalance) {
+        if (amount <= 0) {
+            return "Invalid amount: Withdraw amount must be greater than zero.";
+        }
+        if (amount > currentBalance) {
+            return "Invalid amount: Withdraw amount cannot exceed the current balance.";
         }
         return null;
     }
