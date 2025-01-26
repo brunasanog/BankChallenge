@@ -2,8 +2,10 @@ package ui;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import dao.TransactionDAO;
 import model.Account;
@@ -338,5 +340,43 @@ public class UserInteraction {
                         transaction.getId(), transaction.getTransactionType(), transaction.getAmount(), transaction.getTransactionDate());
             }
         }
+    }
+
+    //----------------------------CREATE NEW ACCOUNT----------------------------
+    public void createNewAccount(User user) {
+        scanner.nextLine();
+
+        List<Account> existingAccounts = accountService.getAccountsByUserId(user.getId());
+        List<String> existingAccountTypes = new ArrayList<>();
+        for (Account existingAccount : existingAccounts) {
+            String accountType = existingAccount.getAccountType();
+            existingAccountTypes.add(accountType);
+        }
+
+        System.out.println("You already have the following account types: " + existingAccountTypes +
+                           ". Remember, you can't create another account of the same type.");
+
+        String accountTypeInput;
+        while (true) {
+            System.out.print("Enter account type to create (CHECKING, SAVINGS, SALARY): ");
+            accountTypeInput = scanner.nextLine().toUpperCase();
+
+
+            if (existingAccountTypes.contains(accountTypeInput)) {
+                System.out.println("You already have this type of account. Please choose a different type.");
+                continue;
+            }
+
+            String accountTypeValidationMessage = authService.validateAccountType(accountTypeInput);
+            if (accountTypeValidationMessage != null) {
+                System.out.println(accountTypeValidationMessage);
+                continue;
+            }
+
+            break;
+        }
+
+        accountService.createAccount(user.getId(), accountTypeInput);
+        System.out.println("Account of type " + accountTypeInput + " created successfully.");
     }
 }

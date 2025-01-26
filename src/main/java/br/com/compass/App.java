@@ -69,6 +69,7 @@ public class App {
             System.out.println("|| 3. Check Balance        ||");
             System.out.println("|| 4. Transfer             ||");
             System.out.println("|| 5. Bank Statement       ||");
+            System.out.println("|| 6. Create a new account ||");
             System.out.println("|| 0. Exit                 ||");
             System.out.println("=============================");
             System.out.print("Choose an option: ");
@@ -100,6 +101,10 @@ public class App {
                     System.out.println("Bank Statement.");
                     Account accountForTransactions = accountService.getAccountByUserId(user.getId());
                     userInteraction.viewTransactions(accountForTransactions);
+                    break;
+                case 6:
+                    System.out.println("Creating a new account.");
+                    userInteraction.createNewAccount(user);
                     break;
                 case 0:
                     // ToDo...

@@ -5,6 +5,8 @@ import dao.TransactionDAO;
 import model.Account;
 import model.Transaction;
 
+import java.util.List;
+
 public class AccountService {
 
     private final AccountDAO accountDAO = new AccountDAO();
@@ -131,6 +133,11 @@ public class AccountService {
 
         System.out.printf("Transfer of R$%.2f successfully made from account ID: %d to account ID: %d%n" +
                 "Your new balance is: R$%.2f%n", amount, sourceAccountId, targetAccountId, sourceAccount.getBalance());
+    }
+
+    //RETURN ALL COUNTS FROM USER
+    public List<Account> getAccountsByUserId(int userId) {
+        return accountDAO.getAccountsByUserId(userId);
     }
 
 }

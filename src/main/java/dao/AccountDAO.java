@@ -4,6 +4,8 @@ import model.Account;
 import db.DatabaseConnection;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccountDAO {
 
@@ -94,5 +96,32 @@ public class AccountDAO {
         } catch (SQLException e) {
             System.out.println("Error while updating account: " + e.getMessage());
         }
+    }
+
+    //GET ALL ACCOUNTS FROM USER
+    // AccountDAO.java
+    public List<Account> getAccountsByUserId(int userId) {
+        String sql = "SELECT * FROM account WHERE user_id = ?";
+        List<Account> accounts = new ArrayList<>();
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Account account = new Account(
+                        rs.getInt("user_id"),
+                        rs.getDouble("balance"),
+                        rs.getString("account_type")
+                );
+                account.setId(rs.getInt("id"));
+                accounts.add(account);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while retrieving accounts: " + e.getMessage());
+        }
+        return accounts;
     }
 }
