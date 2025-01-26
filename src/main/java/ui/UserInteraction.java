@@ -280,9 +280,46 @@ public class UserInteraction {
         int targetAccountId = scanner.nextInt();
         scanner.nextLine();
 
+        if (targetAccountId == sourceAccount.getId()) {
+            System.out.println("Invalid operation: You cannot transfer money to the same account.");
+            return;
+        }
+
+        Account targetAccount = accountService.getAccountById(targetAccountId);
+        String accountValidationMessage = authService.validateAccountExistence(targetAccount);
+        if (accountValidationMessage != null) {
+            System.out.println(accountValidationMessage);
+            return;
+        }
+
         System.out.print("Enter the amount to transfer: ");
-        double amount = scanner.nextDouble();
-        scanner.nextLine();
+        String input = scanner.nextLine().trim();
+
+        if (input.isEmpty()) {
+            System.out.println("Invalid input: Please enter a valid number.");
+            return;
+        }
+
+        double amount;
+
+        try {
+            amount = Double.parseDouble(input);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input: Please enter a valid number.");
+            return;
+        }
+
+        double currentBalance = accountService.checkBalance(sourceAccount.getId());
+        if (amount > currentBalance) {
+            System.out.println("Insufficient funds for this transfer.");
+            return;
+        }
+
+        String validationMessage = authService.validateTransferAmount(amount);
+        if (validationMessage != null) {
+            System.out.println(validationMessage);
+            return;
+        }
 
         accountService.transferBetweenAccounts(sourceAccount.getId(), targetAccountId, amount);
     }

@@ -20,6 +20,11 @@ public class AccountService {
         return accountDAO.getAccountByUserId(userId);
     }
 
+    //GET ACCOUNT BY ID
+    public Account getAccountById(int accountId) {
+        return accountDAO.getAccountById(accountId);
+    }
+
     //GET ACCOUNT TYPE BY USER ID
     public String getAccountTypeById(int userId) {
         Account account = accountDAO.getAccountById(userId);
@@ -54,12 +59,12 @@ public class AccountService {
 
         if (account != null) {
             if (amount <= 0) {
-                System.out.println("The withdrawal amount must be positive.");
+                System.out.println("The withdraw amount must be positive.");
                 return;
             }
 
             if (amount > account.getBalance()) {
-                System.out.println("Insufficient funds for this withdrawal.");
+                System.out.println("Insufficient funds for this withdraw.");
                 return;
             }
 
@@ -70,7 +75,7 @@ public class AccountService {
             TransactionDAO transactionDAO = new TransactionDAO();
             transactionDAO.createTransaction(transaction);
 
-            System.out.printf("Withdrawal of R$%.2f successfully made from account ID: %d%n" +
+            System.out.printf("Withdraw of R$%.2f successfully made from account ID: %d%n" +
                     "Your new balance is: R$%.2f%n", amount, accountId, account.getBalance());
         } else {
             System.out.println("Account not found.");

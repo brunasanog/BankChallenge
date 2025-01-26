@@ -1,6 +1,7 @@
 package service;
 
 import dao.UserDAO;
+import model.Account;
 import model.AccountType;
 
 import java.time.LocalDate;
@@ -168,6 +169,22 @@ public class ValidationService {
         }
         if (amount > currentBalance) {
             return "Invalid amount: Withdraw amount cannot exceed the current balance.";
+        }
+        return null;
+    }
+
+    // VALIDATE TRANSFER
+    public String validateTransferAmount(double amount) {
+        if (amount <= 0) {
+            return "Invalid amount: Transfer amount must be greater than zero.";
+        }
+        return null;
+    }
+
+    // VALIDATE ACCOUNT
+    public String validateAccountExistence(Account account) {
+        if (account == null) {
+            return "Invalid account: Account does not exist.";
         }
         return null;
     }
