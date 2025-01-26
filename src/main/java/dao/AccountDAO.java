@@ -24,4 +24,28 @@ public class AccountDAO {
         }
     }
 
+    public Account getAccountByUserId(int userId) {
+        String sql = "SELECT * FROM account WHERE user_id = ?";
+        Account account = null;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                account = new Account(
+                        rs.getInt("user_id"),
+                        rs.getDouble("balance"),
+                        rs.getString("account_type")
+                );
+                account.setId(rs.getInt("id")); // Define o ID da conta
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while retrieving account: " + e.getMessage());
+        }
+        return account; // Retorna a conta encontrada ou null se não encontrada
+    }
+
 }

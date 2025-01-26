@@ -4,9 +4,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+import model.Account;
 import model.User;
+import service.AccountService;
 import service.AuthService;
 import service.UserService;
+import service.AccountService;
 import util.ValidationUtil;
 
 import static br.com.compass.App.bankMenu;
@@ -17,12 +20,14 @@ public class UserInteraction {
     private final Scanner scanner;
     private final UserService userService;
     private final AuthService authService;
+    private final AccountService accountService;
     public final ValidationUtil validationUtil;
 
-    public UserInteraction(Scanner scanner, UserService userService, AuthService authService, ValidationUtil validationUtil) {
+    public UserInteraction(Scanner scanner, UserService userService, AuthService authService, AccountService accountService, ValidationUtil validationUtil) {
         this.scanner = scanner;
         this.userService = userService;
         this.authService = authService;
+        this.accountService = accountService;
         this.validationUtil = validationUtil;
     }
 
@@ -156,6 +161,17 @@ public class UserInteraction {
             User user = userService.login(cpf, password);
             if (user != null) {
                 System.out.println("Login successful! Welcome, " + user.getName() + "!");
+
+                // Aqui você busca a conta associada ao usuário
+
+                Account account = accountService.getAccountByUserId(user.getId());
+                if (account != null) {
+                    int accountId = account.getId();
+                    System.out.println("Your account ID is: " + accountId);
+                } else {
+                    System.out.println("No account found for this user.");
+                }
+
                 loggedIn = true;
                 bankMenu(scanner);
             } else {

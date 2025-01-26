@@ -17,6 +17,14 @@ public class Account {
         this.accountType = accountType;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getUserId() {
         return userId;
     }

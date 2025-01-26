@@ -2,6 +2,7 @@ package br.com.compass;
 
 import java.util.Scanner;
 
+import service.AccountService;
 import ui.UserInteraction;
 import service.AuthService;
 import service.UserService;
@@ -23,7 +24,8 @@ public class App {
         UserService userService = new UserService();
         AuthService authService = new AuthService();
         ValidationUtil validationUtil = new ValidationUtil();
-        UserInteraction userInteraction = new UserInteraction(scanner, userService, authService, validationUtil);
+        AccountService accountService = new AccountService();
+        UserInteraction userInteraction = new UserInteraction(scanner, userService, authService, accountService, validationUtil);
 
         while (running) {
             System.out.println("========= Main Menu =========");

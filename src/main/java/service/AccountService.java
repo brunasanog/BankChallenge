@@ -12,6 +12,10 @@ public class AccountService {
         accountDAO.createAccount(account);
     }
 
+    public Account getAccountByUserId(int userId) {
+        return accountDAO.getAccountByUserId(userId);
+    }
+
     /*
     public double checkBalance(){
 
