@@ -198,8 +198,7 @@ public class UserInteraction {
     public void withdraw(Account account) {
         System.out.print("Enter the amount to withdraw: ");
         double amount = scanner.nextDouble();
-        scanner.nextLine(); // Limpa o buffer
-
+        scanner.nextLine();
         accountService.withdrawFromAccount(account.getId(), amount);
     }
 
@@ -209,7 +208,17 @@ public class UserInteraction {
         System.out.println(String.format("Your current balance is: R$%.2f", balance));
     }
 
+    //----------------------------TRANSFER----------------------------
+    public void transfer(Account sourceAccount) {
+        System.out.print("Enter the target account ID: ");
+        int targetAccountId = scanner.nextInt();
+        scanner.nextLine();
 
+        System.out.print("Enter the amount to transfer: ");
+        double amount = scanner.nextDouble();
+        scanner.nextLine();
+        accountService.transferBetweenAccounts(sourceAccount.getId(), targetAccountId, amount);
+    }
 
 
 

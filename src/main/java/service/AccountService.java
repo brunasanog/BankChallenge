@@ -67,15 +67,39 @@ public class AccountService {
         }
     }
 
+    // TRANSFER
+    public void transferBetweenAccounts(int sourceAccountId, int targetAccountId, double amount) {
+        Account sourceAccount = accountDAO.getAccountByUserId(sourceAccountId);
+        Account targetAccount = accountDAO.getAccountByUserId(targetAccountId);
 
-    /*
-    public double checkBalance(){
+        if (sourceAccount == null) {
+            System.out.println("Source account not found.");
+            return;
+        }
 
+        if (targetAccount == null) {
+            System.out.println("Target account not found.");
+            return;
+        }
+
+        if (amount <= 0) {
+            System.out.println("The transfer amount must be positive.");
+            return;
+        }
+
+        if (amount > sourceAccount.getBalance()) {
+            System.out.println("Insufficient funds for this transfer.");
+            return;
+        }
+
+        sourceAccount.setBalance(sourceAccount.getBalance() - amount);
+        targetAccount.setBalance(targetAccount.getBalance() + amount);
+
+        accountDAO.updateAccount(sourceAccount);
+        accountDAO.updateAccount(targetAccount);
+
+        System.out.println(String.format("Transfer of R$%.2f successfully made from account ID: %d to account ID: %d%n" +
+                "Your new balance is: R$%.2f", amount, sourceAccountId, targetAccountId, sourceAccount.getBalance()));
     }
-
-    public void transfer(){
-
-    }
-*/
 
 }

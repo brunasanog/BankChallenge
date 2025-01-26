@@ -92,8 +92,9 @@ public class App {
                     userInteraction.checkBalance(accountForBalance);
                     break;
                 case 4:
-                    // ToDo...
                     System.out.println("Transfer.");
+                    Account accountForTransfer = accountService.getAccountByUserId(user.getId());
+                    userInteraction.transfer(accountForTransfer);
                     break;
                 case 5:
                     // ToDo...
