@@ -1,10 +1,10 @@
 package util;
 
-import service.AuthService;
+import service.ValidationService;
 
 public class ValidationUtil {
 
-    AuthService authService = new AuthService();
+    ValidationService authService = new ValidationService();
 
     public boolean cpfFormat(String cpf) {
         String cpfValidationMessage = authService.validateCpfFormat(cpf);

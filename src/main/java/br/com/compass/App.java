@@ -6,7 +6,7 @@ import model.Account;
 import model.User;
 import service.AccountService;
 import ui.UserInteraction;
-import service.AuthService;
+import service.ValidationService;
 import service.UserService;
 import util.ValidationUtil;
 
@@ -24,7 +24,7 @@ public class App {
     public static void mainMenu(Scanner scanner) {
         boolean running = true;
         UserService userService = new UserService();
-        AuthService authService = new AuthService();
+        ValidationService authService = new ValidationService();
         ValidationUtil validationUtil = new ValidationUtil();
         AccountService accountService = new AccountService();
         UserInteraction userInteraction = new UserInteraction(scanner, userService, authService, accountService, validationUtil);
@@ -83,7 +83,8 @@ public class App {
                     System.out.println("Deposit.");
                     break;
                 case 2:
-                    // ToDo...
+                    Account accountForWithdraw = accountService.getAccountByUserId(user.getId());
+                    userInteraction.withdraw(accountForWithdraw);
                     System.out.println("Withdraw.");
                     break;
                 case 3:

@@ -7,9 +7,8 @@ import java.util.Scanner;
 import model.Account;
 import model.User;
 import service.AccountService;
-import service.AuthService;
+import service.ValidationService;
 import service.UserService;
-import service.AccountService;
 import util.ValidationUtil;
 
 import static br.com.compass.App.bankMenu;
@@ -19,11 +18,11 @@ public class UserInteraction {
 
     private final Scanner scanner;
     private final UserService userService;
-    private final AuthService authService;
+    private final ValidationService authService;
     private final AccountService accountService;
     public final ValidationUtil validationUtil;
 
-    public UserInteraction(Scanner scanner, UserService userService, AuthService authService, AccountService accountService, ValidationUtil validationUtil) {
+    public UserInteraction(Scanner scanner, UserService userService, ValidationService authService, AccountService accountService, ValidationUtil validationUtil) {
         this.scanner = scanner;
         this.userService = userService;
         this.authService = authService;
@@ -115,7 +114,7 @@ public class UserInteraction {
             System.out.print("Enter account type (CHECKING, SAVINGS, SALARY): ");
             accountTypeInput = scanner.nextLine();
 
-            String accountTypeValidationMessage = authService.isValidAccountType(accountTypeInput);
+            String accountTypeValidationMessage = authService.validateAccountType(accountTypeInput);
             if (accountTypeValidationMessage != null) {
                 System.out.println(accountTypeValidationMessage);
                 continue;
@@ -195,6 +194,14 @@ public class UserInteraction {
         accountService.depositToAccount(account.getId(), amount);
     }
 
+    //----------------------------WITHDRAW----------------------------
+    public void withdraw(Account account) {
+        System.out.print("Enter the amount to withdraw: ");
+        double amount = scanner.nextDouble();
+        scanner.nextLine(); // Limpa o buffer
+
+        accountService.withdrawFromAccount(account.getId(), amount);
+    }
 
 
 

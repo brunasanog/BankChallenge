@@ -8,7 +8,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class AuthService {
+public class ValidationService {
 
     private final UserDAO userDAO = new UserDAO();
 
@@ -113,7 +113,7 @@ public class AuthService {
 
 
     // ACCOUNT TYPE
-    public String isValidAccountType(String accountTypeInput) {
+    public String validateAccountType(String accountTypeInput) {
         if (accountTypeInput == null || accountTypeInput.trim().isEmpty()) {
             return "Invalid account type: Account type cannot be null or empty.";
         }
@@ -148,5 +148,10 @@ public class AuthService {
         }
         return null;
     }
+
+    //LOGIN
+
+
+
 
 }
