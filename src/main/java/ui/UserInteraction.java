@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 import dao.TransactionDAO;
 import model.Account;
@@ -190,9 +189,9 @@ public class UserInteraction {
                     }
 
                     Account selectedAccount = accounts.get(accountChoice - 1);
-                    bankMenu(scanner, user, this, selectedAccount);
+                    bankMenu(scanner, user, this, selectedAccount, this.accountService);
                 } else if (accounts.size() == 1) {
-                    bankMenu(scanner, user, this, accounts.get(0));
+                    bankMenu(scanner, user, this, accounts.get(0), this.accountService);
                 } else {
                     System.out.println("No accounts found for this user.");
                 }

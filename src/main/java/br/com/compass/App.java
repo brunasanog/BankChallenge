@@ -58,7 +58,7 @@ public class App {
         }
     }
 
-    public static void bankMenu(Scanner scanner, User user, UserInteraction userInteraction, Account selectedAccount) {
+    public static void bankMenu(Scanner scanner, User user, UserInteraction userInteraction, Account selectedAccount, AccountService accountService) {
         boolean running = true;
 
         while (running) {
@@ -73,7 +73,9 @@ public class App {
             System.out.println("|| 0. Exit                 ||");
             System.out.println("=============================");
 
-            System.out.printf("Selected Account: %s | Balance: R$%.2f%n%n",
+            selectedAccount = accountService.getAccountById(selectedAccount.getId());
+            System.out.printf("Selected Account ID: %d | Type: %s | Balance: R$%.2f%n%n",
+                    selectedAccount.getId(),
                     selectedAccount.getAccountType(),
                     selectedAccount.getBalance());
 
