@@ -77,7 +77,7 @@ public class ValidationService {
         }
 
         if (!phone.matches("\\d{11}")) {
-            return "Invalid phone: Please enter your phone number in the format DDD + XXXXbirtXXXX (e.g., 02187654321).";
+            return "Invalid phone: Please enter your phone number in the format DDD + XXXXXXXX (e.g., 02187654321).";
         }
         return null;
     }
