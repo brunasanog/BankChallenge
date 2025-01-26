@@ -7,6 +7,7 @@ import java.sql.*;
 
 public class UserDAO {
 
+    //CREATE USER
     public int createUser(User user) {
         String sql = "INSERT INTO user (cpf, name, email, phone, birth_date, account_type, password) VALUES (?,?,?,?,?,?,?)";
         int generatedId = -1;
@@ -37,6 +38,7 @@ public class UserDAO {
         return generatedId;
     }
 
+    //CHECK CPF
     public boolean isCpfRegistered(String cpf) {
         String sql = "SELECT COUNT(*) FROM user WHERE cpf = ?";
 
@@ -56,6 +58,7 @@ public class UserDAO {
         return false;
     }
 
+    //FIND USER BY ID
     public User findByCpf(String cpf) {
         String sql = "SELECT * FROM user WHERE cpf = ?";
         User user = null;

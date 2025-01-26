@@ -1,5 +1,6 @@
 package br.com.compass;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import model.Account;
@@ -30,30 +31,35 @@ public class App {
         UserInteraction userInteraction = new UserInteraction(scanner, userService, authService, accountService, validationUtil);
 
         while (running) {
-            System.out.println("========= Main Menu =========");
+            System.out.println("\n========= Main Menu =========");
             System.out.println("|| 1. Login                ||");
             System.out.println("|| 2. Account Opening      ||");
             System.out.println("|| 0. Exit                 ||");
             System.out.println("=============================");
-            System.out.print("Choose an option: ");
+            System.out.print("Choose an option: \n");
 
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            try {
+                int option = scanner.nextInt();
+                scanner.nextLine();
 
-            switch (option) {
-                case 1:
-                    userInteraction.login();
-                    break;
+                switch (option) {
+                    case 1:
+                        userInteraction.login();
+                        break;
 
-                case 2:
-                    userInteraction.openAccount();
-                    break;
+                    case 2:
+                        userInteraction.openAccount();
+                        break;
 
-                case 0:
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Invalid option! Please try again.");
+                    case 0:
+                        running = false;
+                        break;
+                    default:
+                        System.out.println("Invalid option! Please try again.\n");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input! Please enter a number.\n");
+                scanner.nextLine();
             }
         }
     }
@@ -79,43 +85,46 @@ public class App {
                     selectedAccount.getAccountType(),
                     selectedAccount.getBalance());
 
-            System.out.print("Choose an option: ");
+            System.out.print("Choose an option: \n");
 
-            int option = scanner.nextInt();
+            try {
+                int option = scanner.nextInt();
 
-            switch (option) {
-                case 1:
-                    System.out.println("Deposit.");
-                    userInteraction.deposit(selectedAccount);
-                    break;
-                case 2:
-                    System.out.println("Withdraw.");
-                    userInteraction.withdraw(selectedAccount);
-                    break;
-                case 3:
-                    System.out.println("Check Balance.");
-                    userInteraction.checkBalance(selectedAccount);
-                    break;
-                case 4:
-                    System.out.println("Transfer.");
-                    userInteraction.transfer(selectedAccount);
-                    break;
-                case 5:
-                    System.out.println("Bank Statement.");
-                    userInteraction.viewTransactions(selectedAccount);
-                    break;
-                case 6:
-                    System.out.println("Creating a new account.");
-                    userInteraction.createNewAccount(user);
-                    break;
-                case 0:
-                    System.out.println("Exiting...");
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Invalid option! Please try again.");
+                switch (option) {
+                    case 1:
+                        System.out.println("Deposit.\n");
+                        userInteraction.deposit(selectedAccount);
+                        break;
+                    case 2:
+                        System.out.println("Withdraw.\n");
+                        userInteraction.withdraw(selectedAccount);
+                        break;
+                    case 3:
+                        System.out.println("Check Balance.\n");
+                        userInteraction.checkBalance(selectedAccount);
+                        break;
+                    case 4:
+                        System.out.println("Transfer.\n");
+                        userInteraction.transfer(selectedAccount);
+                        break;
+                    case 5:
+                        System.out.println("Bank Statement.\n");
+                        userInteraction.viewTransactions(selectedAccount);
+                        break;
+                    case 6:
+                        System.out.println("Creating a new account.\n");
+                        userInteraction.createNewAccount(user);
+                        break;
+                    case 0:
+                        System.out.println("Exiting...\n");
+                        running = false;
+                        break;
+                    default:
+                        System.out.println("Invalid option! Please try again.\n");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input! Please enter a number.\n");
             }
         }
     }
-
 }

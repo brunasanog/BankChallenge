@@ -10,7 +10,6 @@ import java.time.LocalDate;
 public class UserService {
 
     private final UserDAO userDAO = new UserDAO();
-    private final AccountDAO accountDAO = new AccountDAO();
     private final AccountService accountService = new AccountService();
 
 

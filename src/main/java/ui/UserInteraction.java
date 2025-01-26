@@ -170,9 +170,9 @@ public class UserInteraction {
                 List<Account> accounts = accountService.getAccountsByUserId(user.getId());
 
                 if (accounts.size() > 1) {
-                    System.out.println("You have multiple accounts. Please choose one to continue:");
+                    System.out.println("You have multiple accounts. Please choose one to continue:\n");
                     for (int i = 0; i < accounts.size(); i++) {
-                        System.out.printf("%d. Account ID: %d | Type: %s%n", i + 1, accounts.get(i).getId(), accounts.get(i).getAccountType());
+                        System.out.printf("%d.  %s%n", i + 1, accounts.get(i).getAccountType());
                     }
 
                     int accountChoice;
@@ -219,7 +219,7 @@ public class UserInteraction {
             String input = scanner.nextLine().trim();
 
             if (input.isEmpty()) {
-                System.out.println("Invalid input: Please enter a valid number.");
+                System.out.println("Invalid input: Please enter a valid number.\n");
                 continue;
             }
 
@@ -228,7 +228,7 @@ public class UserInteraction {
             try {
                 amount = Double.parseDouble(input);
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input: Please enter a valid number.");
+                System.out.println("Invalid input: Please enter a valid number.\n");
                 continue;
             }
             
@@ -249,11 +249,11 @@ public class UserInteraction {
         double currentBalance = accountService.checkBalance(account.getId());
 
         while (true) {
-            System.out.print("Enter the amount to withdraw: ");
+            System.out.print("\nEnter the amount to withdraw: ");
             String input = scanner.nextLine().trim();
 
             if (input.isEmpty()) {
-                System.out.println("Invalid input: Please enter a valid number.");
+                System.out.println("\nInvalid input: Please enter a valid number.");
                 continue;
             }
 
@@ -262,7 +262,7 @@ public class UserInteraction {
             try {
                 amount = Double.parseDouble(input);
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input: Please enter a valid number.");
+                System.out.println("\nInvalid input: Please enter a valid number.");
                 continue;
             }
 
@@ -273,7 +273,7 @@ public class UserInteraction {
             }
 
             accountService.withdrawFromAccount(account.getId(), amount);
-            System.out.printf("Withdrawal of R$%.2f successfully made from account ID: %d%n", amount, account.getId());
+            System.out.printf("Withdraw of R$%.2f successfully made from account ID: %d%n\n", amount, account.getId());
             break;
         }
     }
@@ -281,7 +281,7 @@ public class UserInteraction {
     //----------------------------CHECK BALANCE----------------------------
     public void checkBalance(Account account) {
         double balance = accountService.checkBalance(account.getId());
-        System.out.printf("Your current balance is: R$%.2f%n", balance);
+        System.out.printf("\nYour current balance is: R$%.2f%n", balance);
     }
 
     //----------------------------TRANSFER----------------------------
@@ -289,21 +289,27 @@ public class UserInteraction {
         String accountType = accountService.getAccountTypeById(sourceAccount.getId());
 
         if (accountType == null) {
-            System.out.println("Account not found.");
+            System.out.println("\nAccount not found.");
             return;
         }
 
         if (!accountType.equalsIgnoreCase("CHECKING")) {
-            System.out.println("Transfers are only allowed from CHECKING accounts.");
+            System.out.println("\nTransfers are only allowed from CHECKING accounts.");
             return;
         }
 
-        System.out.print("Enter the target account ID: ");
+        boolean transferSuccessful = false;
+
+        while (!transferSuccessful) {
+
+        }
+
+        System.out.print("\nEnter the target account ID: ");
         int targetAccountId = scanner.nextInt();
         scanner.nextLine();
 
         if (targetAccountId == sourceAccount.getId()) {
-            System.out.println("Invalid operation: You cannot transfer money to the same account.");
+            System.out.println("\nInvalid operation: You cannot transfer money to the same account.");
             return;
         }
 
@@ -314,11 +320,11 @@ public class UserInteraction {
             return;
         }
 
-        System.out.print("Enter the amount to transfer: ");
+        System.out.print("\nEnter the amount to transfer: ");
         String input = scanner.nextLine().trim();
 
         if (input.isEmpty()) {
-            System.out.println("Invalid input: Please enter a valid number.");
+            System.out.println("Invalid input: Please enter a valid number.\n");
             return;
         }
 
@@ -327,7 +333,7 @@ public class UserInteraction {
         try {
             amount = Double.parseDouble(input);
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input: Please enter a valid number.");
+            System.out.println("Invalid input: Please enter a valid number.\n");
             return;
         }
 
@@ -352,7 +358,7 @@ public class UserInteraction {
         List<Transaction> transactions = transactionDAO.getTransactionsByAccountId(account.getId());
 
         if (transactions.isEmpty()) {
-            System.out.println("No transactions found for this account.");
+            System.out.println("No transactions found for this account.\n");
         } else {
             System.out.println("Transaction History:");
             for (Transaction transaction : transactions) {
@@ -374,7 +380,7 @@ public class UserInteraction {
         }
 
         System.out.println("You already have the following account types: " + existingAccountTypes +
-                           ". Remember, you can't create another account of the same type.");
+                           ". Remember, you can't create another account of the same type.\n");
 
         String accountTypeInput;
         while (true) {
@@ -383,7 +389,7 @@ public class UserInteraction {
 
 
             if (existingAccountTypes.contains(accountTypeInput)) {
-                System.out.println("You already have this type of account. Please choose a different type.");
+                System.out.println("You already have this type of account. Please choose a different type.\n");
                 continue;
             }
 

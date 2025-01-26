@@ -154,10 +154,10 @@ public class ValidationService {
     //VALIDATE DEPOSIT
     public String validateDepositAmount(Double amount) {
         if (amount == null) {
-            return "Invalid amount: Amount cannot be null.";
+            return "Invalid amount: Amount cannot be null.\n";
         }
         if (amount <= 0) {
-            return "Invalid amount: Amount must be greater than zero.";
+            return "Invalid amount: Amount must be greater than zero.\n";
         }
         return null;
     }

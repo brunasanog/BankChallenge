@@ -49,7 +49,8 @@ public class AccountService {
             TransactionDAO transactionDAO = new TransactionDAO();
             transactionDAO.createTransaction(transaction);
 
-            System.out.printf("Deposit of R$%.2f successfully made to account ID: %d%nYour new balance is: R$%.2f%n", amount, accountId, account.getBalance());
+            System.out.printf("\nDeposit of R$%.2f successfully made to account ID: %d%n" +
+                                "Your new balance is: R$%.2f%n", amount, accountId, account.getBalance());
         } else {
             System.out.println("Account not found.");
         }
