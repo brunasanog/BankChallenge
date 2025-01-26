@@ -162,8 +162,6 @@ public class UserInteraction {
             if (user != null) {
                 System.out.println("Login successful! Welcome, " + user.getName() + "!");
 
-                // Aqui você busca a conta associada ao usuário
-
                 Account account = accountService.getAccountByUserId(user.getId());
                 if (account != null) {
                     int accountId = account.getId();

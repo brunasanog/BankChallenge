@@ -40,12 +40,12 @@ public class AccountDAO {
                         rs.getDouble("balance"),
                         rs.getString("account_type")
                 );
-                account.setId(rs.getInt("id")); // Define o ID da conta
+                account.setId(rs.getInt("id"));
             }
         } catch (SQLException e) {
             System.out.println("Error while retrieving account: " + e.getMessage());
         }
-        return account; // Retorna a conta encontrada ou null se não encontrada
+        return account;
     }
 
 }
