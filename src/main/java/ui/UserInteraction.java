@@ -163,11 +163,13 @@ public class UserInteraction {
                 System.out.println("Login successful! Welcome, " + user.getName() + "!");
 
                 Account account = accountService.getAccountByUserId(user.getId());
+
                 if (account != null) {
                     int accountId = account.getId();
                     System.out.println("Your account ID is: " + accountId);
                 } else {
                     System.out.println("No account found for this user.");
+                    System.out.println(user);
                 }
 
                 loggedIn = true;

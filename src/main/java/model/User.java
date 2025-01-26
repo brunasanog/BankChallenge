@@ -85,4 +85,17 @@ public class User {
         this.accountType = accountType;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", cpf='" + cpf + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", birthDate=" + birthDate +
+                ", accountType='" + accountType + '\'' +
+                '}';
+    }
+
 }

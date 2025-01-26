@@ -76,10 +76,14 @@ public class UserDAO {
                         rs.getString("account_type"),
                         rs.getString("password")
                 );
+                user.setId(rs.getInt("id"));
             }
         } catch (SQLException e) {
             System.out.println("Error while finding user by CPF: " + e.getMessage());
         }
         return user;
     }
+
+
+
 }

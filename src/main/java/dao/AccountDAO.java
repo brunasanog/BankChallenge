@@ -11,14 +11,20 @@ public class AccountDAO {
         String sql = "INSERT INTO account (user_id, balance, account_type) VALUES (?, ?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+             PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, account.getUserId());
             stmt.setDouble(2, account.getBalance());
             stmt.setString(3, account.getAccountType());
 
-            stmt.executeUpdate();
-
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+                ResultSet generatedKeys = stmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    account.setId(generatedKeys.getInt(1));
+                    System.out.println("Account created with ID: " + account.getId());
+                }
+            }
         } catch (SQLException e) {
             System.out.println("Error while creating account: " + e.getMessage());
         }
@@ -47,5 +53,7 @@ public class AccountDAO {
         }
         return account;
     }
+
+
 
 }
