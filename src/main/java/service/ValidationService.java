@@ -23,12 +23,13 @@ public class ValidationService {
             return "Invalid CPF: CPF must contain only numbers.";
         }
 
-        if (cpf == null || cpf.length() != 11) {
+        if (cpf.length() != 11) {
             return "Invalid CPF: CPF must have exactly 11 digits.";
         }
         return null;
     }
 
+    //CPF ALREADY REGISTERED
     public String isCpfRegistered(String cpf) {
         if (userDAO.isCpfRegistered(cpf)) {
             return "CPF already registered! Please use a different CPF or login.";
@@ -44,7 +45,7 @@ public class ValidationService {
         if (!name.matches("[\\p{L}\\s]+")) {
             return "Invalid name: Name cannot contain numbers or special characters.";
         }
-        if (name.length() < 03) {
+        if (name.length() < 3) {
             return "Invalid name: Name must be at least 3 characters long.";
         }
         return null;
@@ -149,7 +150,16 @@ public class ValidationService {
         return null;
     }
 
-    //LOGIN
+    //DEPOSIT
+    public String validateDepositAmount(Double amount) {
+        if (amount == null) {
+            return "Invalid amount: Amount cannot be null.";
+        }
+        if (amount <= 0) {
+            return "Invalid amount: Amount must be greater than zero.";
+        }
+        return null;
+    }
 
 
 

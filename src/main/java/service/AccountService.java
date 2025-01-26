@@ -15,7 +15,7 @@ public class AccountService {
         accountDAO.createAccount(account);
     }
 
-    //GET ACCOUNT BY ID
+    //GET ACCOUNT BY USER ID
     public Account getAccountByUserId(int userId) {
         return accountDAO.getAccountByUserId(userId);
     }
@@ -42,7 +42,7 @@ public class AccountService {
             TransactionDAO transactionDAO = new TransactionDAO();
             transactionDAO.createTransaction(transaction);
 
-            System.out.println(String.format("Deposit of R$%.2f successfully made to account ID: %d%nYour new balance is: R$%.2f", amount, accountId, account.getBalance()));
+            System.out.printf("Deposit of R$%.2f successfully made to account ID: %d%nYour new balance is: R$%.2f%n", amount, accountId, account.getBalance());
         } else {
             System.out.println("Account not found.");
         }
@@ -70,8 +70,8 @@ public class AccountService {
             TransactionDAO transactionDAO = new TransactionDAO();
             transactionDAO.createTransaction(transaction);
 
-            System.out.println(String.format("Withdrawal of R$%.2f successfully made from account ID: %d%n" +
-                    "Your new balance is: R$%.2f", amount, accountId, account.getBalance()));
+            System.out.printf("Withdrawal of R$%.2f successfully made from account ID: %d%n" +
+                    "Your new balance is: R$%.2f%n", amount, accountId, account.getBalance());
         } else {
             System.out.println("Account not found.");
         }
@@ -124,8 +124,8 @@ public class AccountService {
         TransactionDAO transactionDAO = new TransactionDAO();
         transactionDAO.createTransaction(transaction);
 
-        System.out.println(String.format("Transfer of R$%.2f successfully made from account ID: %d to account ID: %d%n" +
-                "Your new balance is: R$%.2f", amount, sourceAccountId, targetAccountId, sourceAccount.getBalance()));
+        System.out.printf("Transfer of R$%.2f successfully made from account ID: %d to account ID: %d%n" +
+                "Your new balance is: R$%.2f%n", amount, sourceAccountId, targetAccountId, sourceAccount.getBalance());
     }
 
 }

@@ -95,7 +95,7 @@ public class UserInteraction {
 
         // BIRTHDATE
         String birthDateInput;
-        LocalDate birthDate = null;
+        LocalDate birthDate;
 
         while (true) {
             System.out.print("Enter your birth date (dd/MM/yyyy): ");
@@ -163,19 +163,16 @@ public class UserInteraction {
             User user = userService.login(cpf, password);
             if (user != null) {
                 System.out.println("Login successful! Welcome, " + user.getName() + "!");
-
                 Account account = accountService.getAccountByUserId(user.getId());
 
-                if (account != null) {
-                    int accountId = account.getId();
-                    System.out.println("Your account ID is: " + accountId);
-                } else {
+                if (account == null) {
                     System.out.println("No account found for this user.");
                     System.out.println(user);
                 }
 
                 loggedIn = true;
                 bankMenu(scanner, user, this);
+
             } else {
                 System.out.println("Invalid CPF or password. Please try again.");
                 System.out.print("Would you like to try again? (yes/no): ");
@@ -191,11 +188,38 @@ public class UserInteraction {
 
     //----------------------------DEPOSIT----------------------------
     public void deposit(Account account) {
-        System.out.print("Enter the amount to deposit: ");
-        double amount = scanner.nextDouble();
         scanner.nextLine();
-        accountService.depositToAccount(account.getId(), amount);
+
+        while (true) {
+            System.out.print("Enter the amount to deposit: ");
+            String input = scanner.nextLine().trim();
+
+            if (input.isEmpty()) {
+                System.out.println("Invalid input: Please enter a valid number.");
+                continue;
+            }
+
+            double amount;
+            
+            try {
+                amount = Double.parseDouble(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input: Please enter a valid number.");
+                continue;
+            }
+            
+            String validationMessage = authService.validateDepositAmount(amount);
+            if (validationMessage != null) {
+                System.out.println(validationMessage);
+                continue; 
+            }
+            
+            accountService.depositToAccount(account.getId(), amount);
+            System.out.printf("Deposit of R$%.2f successfully made to account ID: %d%n", amount, account.getId());
+            break;
+        }
     }
+
 
     //----------------------------WITHDRAW----------------------------
     public void withdraw(Account account) {
@@ -208,7 +232,7 @@ public class UserInteraction {
     //----------------------------CHECK BALANCE----------------------------
     public void checkBalance(Account account) {
         double balance = accountService.checkBalance(account.getId());
-        System.out.println(String.format("Your current balance is: R$%.2f", balance));
+        System.out.printf("Your current balance is: R$%.2f%n", balance);
     }
 
     //----------------------------TRANSFER----------------------------
@@ -246,8 +270,8 @@ public class UserInteraction {
         } else {
             System.out.println("Transaction History:");
             for (Transaction transaction : transactions) {
-                System.out.println(String.format("ID: %d | Type: %s | Amount: R$%.2f | Date: %s",
-                        transaction.getId(), transaction.getTransactionType(), transaction.getAmount(), transaction.getTransactionDate()));
+                System.out.printf("ID: %d | Type: %s | Amount: R$%.2f | Date: %s%n",
+                        transaction.getId(), transaction.getTransactionType(), transaction.getAmount(), transaction.getTransactionDate());
             }
         }
     }
