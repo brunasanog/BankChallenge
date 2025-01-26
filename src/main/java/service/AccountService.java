@@ -18,6 +18,16 @@ public class AccountService {
         return accountDAO.getAccountByUserId(userId);
     }
 
+    //GET ACCOUNT TYPE BY USER ID
+    public String getAccountTypeByUserId(int userId) {
+        Account account = accountDAO.getAccountByUserId(userId);
+        if (account != null) {
+            return account.getAccountType();
+        } else {
+            return null;
+        }
+    }
+
     //DEPOSIT
     public void depositToAccount(int accountId, double amount) {
         Account account = accountDAO.getAccountByUserId(accountId);

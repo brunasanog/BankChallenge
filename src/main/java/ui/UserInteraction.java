@@ -210,6 +210,18 @@ public class UserInteraction {
 
     //----------------------------TRANSFER----------------------------
     public void transfer(Account sourceAccount) {
+        String accountType = accountService.getAccountTypeByUserId(sourceAccount.getId());
+
+        if (accountType == null) {
+            System.out.println("Account not found.");
+            return;
+        }
+
+        if (!accountType.equalsIgnoreCase("CHECKING")) {
+            System.out.println("Transfers are only allowed from CHECKING accounts.");
+            return;
+        }
+
         System.out.print("Enter the target account ID: ");
         int targetAccountId = scanner.nextInt();
         scanner.nextLine();
@@ -217,6 +229,7 @@ public class UserInteraction {
         System.out.print("Enter the amount to transfer: ");
         double amount = scanner.nextDouble();
         scanner.nextLine();
+
         accountService.transferBetweenAccounts(sourceAccount.getId(), targetAccountId, amount);
     }
 
