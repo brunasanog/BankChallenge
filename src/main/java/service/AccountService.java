@@ -66,7 +66,6 @@ public class AccountService {
             account.setBalance(account.getBalance() - amount);
             accountDAO.updateAccount(account);
 
-            // Registrar a transação
             Transaction transaction = new Transaction(accountId, "WITHDRAW", amount);
             TransactionDAO transactionDAO = new TransactionDAO();
             transactionDAO.createTransaction(transaction);

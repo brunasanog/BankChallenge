@@ -41,4 +41,8 @@ public class Transaction {
         return transactionDate;
     }
 
+    public void setTransactionDate(LocalDateTime transactionDate) {
+        this.transactionDate = transactionDate;
+    }
+
 }

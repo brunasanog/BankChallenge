@@ -28,10 +28,10 @@ public class TransactionDAO {
         }
     }
 
-    //RETURN TRANSACTION
+    // RETURN TRANSACTION
     public List<Transaction> getTransactionsByAccountId(int accountId) {
         List<Transaction> transactions = new ArrayList<>();
-        String sql = "SELECT * FROM transactions WHERE account_id = ? ORDER BY timestamp DESC";
+        String sql = "SELECT * FROM transaction WHERE account_id = ? ORDER BY transaction_date DESC"; // Corrigido para usar transaction_date
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -46,6 +46,7 @@ public class TransactionDAO {
                         rs.getDouble("amount")
                 );
                 transaction.setId(rs.getInt("id"));
+                transaction.setTransactionDate(rs.getTimestamp("transaction_date").toLocalDateTime()); // Adicione esta linha para definir a data da transação
                 transactions.add(transaction);
             }
         } catch (SQLException e) {
