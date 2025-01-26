@@ -99,7 +99,6 @@ public class AccountDAO {
     }
 
     //GET ALL ACCOUNTS FROM USER
-    // AccountDAO.java
     public List<Account> getAccountsByUserId(int userId) {
         String sql = "SELECT * FROM account WHERE user_id = ?";
         List<Account> accounts = new ArrayList<>();
@@ -124,4 +123,6 @@ public class AccountDAO {
         }
         return accounts;
     }
+
+
 }

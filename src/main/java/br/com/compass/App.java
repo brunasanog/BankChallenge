@@ -58,12 +58,12 @@ public class App {
         }
     }
 
-    public static void bankMenu(Scanner scanner, User user, UserInteraction userInteraction) {
+    public static void bankMenu(Scanner scanner, User user, UserInteraction userInteraction, Account selectedAccount) {
         boolean running = true;
-        AccountService accountService = new AccountService();
 
         while (running) {
-            System.out.println("========= Bank Menu =========");
+
+            System.out.println("\n========= Bank Menu =========");
             System.out.println("|| 1. Deposit              ||");
             System.out.println("|| 2. Withdraw             ||");
             System.out.println("|| 3. Check Balance        ||");
@@ -72,6 +72,11 @@ public class App {
             System.out.println("|| 6. Create a new account ||");
             System.out.println("|| 0. Exit                 ||");
             System.out.println("=============================");
+
+            System.out.printf("Selected Account: %s | Balance: R$%.2f%n%n",
+                    selectedAccount.getAccountType(),
+                    selectedAccount.getBalance());
+
             System.out.print("Choose an option: ");
 
             int option = scanner.nextInt();
@@ -79,38 +84,32 @@ public class App {
             switch (option) {
                 case 1:
                     System.out.println("Deposit.");
-                    Account account = accountService.getAccountByUserId(user.getId());
-                    userInteraction.deposit(account);
+                    userInteraction.deposit(selectedAccount);
                     break;
                 case 2:
                     System.out.println("Withdraw.");
-                    Account accountForWithdraw = accountService.getAccountByUserId(user.getId());
-                    userInteraction.withdraw(accountForWithdraw);
+                    userInteraction.withdraw(selectedAccount);
                     break;
                 case 3:
                     System.out.println("Check Balance.");
-                    Account accountForBalance = accountService.getAccountByUserId(user.getId());
-                    userInteraction.checkBalance(accountForBalance);
+                    userInteraction.checkBalance(selectedAccount);
                     break;
                 case 4:
                     System.out.println("Transfer.");
-                    Account accountForTransfer = accountService.getAccountByUserId(user.getId());
-                    userInteraction.transfer(accountForTransfer);
+                    userInteraction.transfer(selectedAccount);
                     break;
                 case 5:
                     System.out.println("Bank Statement.");
-                    Account accountForTransactions = accountService.getAccountByUserId(user.getId());
-                    userInteraction.viewTransactions(accountForTransactions);
+                    userInteraction.viewTransactions(selectedAccount);
                     break;
                 case 6:
                     System.out.println("Creating a new account.");
                     userInteraction.createNewAccount(user);
                     break;
                 case 0:
-                    // ToDo...
                     System.out.println("Exiting...");
                     running = false;
-                    return;
+                    break;
                 default:
                     System.out.println("Invalid option! Please try again.");
             }

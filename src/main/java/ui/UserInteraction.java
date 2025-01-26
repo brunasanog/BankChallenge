@@ -165,17 +165,39 @@ public class UserInteraction {
 
             User user = userService.login(cpf, password);
             if (user != null) {
-                System.out.println("Login successful! Welcome, " + user.getName() + "!");
-                Account account = accountService.getAccountByUserId(user.getId());
+                System.out.println("\nLogin successful! Welcome, " + user.getName() + "!\n");
 
-                if (account == null) {
-                    System.out.println("No account found for this user.");
-                    System.out.println(user);
+
+                List<Account> accounts = accountService.getAccountsByUserId(user.getId());
+
+                if (accounts.size() > 1) {
+                    System.out.println("You have multiple accounts. Please choose one to continue:");
+                    for (int i = 0; i < accounts.size(); i++) {
+                        System.out.printf("%d. Account ID: %d | Type: %s%n", i + 1, accounts.get(i).getId(), accounts.get(i).getAccountType());
+                    }
+
+                    int accountChoice;
+                    while (true) {
+                        System.out.print("Choose an account (1-" + accounts.size() + "): ");
+                        accountChoice = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (accountChoice < 1 || accountChoice > accounts.size()) {
+                            System.out.println("Invalid choice. Please try again.");
+                        } else {
+                            break;
+                        }
+                    }
+
+                    Account selectedAccount = accounts.get(accountChoice - 1);
+                    bankMenu(scanner, user, this, selectedAccount);
+                } else if (accounts.size() == 1) {
+                    bankMenu(scanner, user, this, accounts.get(0));
+                } else {
+                    System.out.println("No accounts found for this user.");
                 }
 
                 loggedIn = true;
-                bankMenu(scanner, user, this);
-
             } else {
                 System.out.println("Invalid CPF or password. Please try again.");
                 System.out.print("Would you like to try again? (yes/no): ");
@@ -218,7 +240,6 @@ public class UserInteraction {
             }
             
             accountService.depositToAccount(account.getId(), amount);
-            System.out.printf("Deposit of R$%.2f successfully made to account ID: %d%n", amount, account.getId());
             break;
         }
     }
