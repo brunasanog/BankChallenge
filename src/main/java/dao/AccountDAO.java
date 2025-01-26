@@ -56,7 +56,7 @@ public class AccountDAO {
         return account;
     }
 
-    //UPDATE
+    //UPDATE BALANCE
     public void updateAccount(Account account) {
         String sql = "UPDATE account SET balance = ? WHERE id = ?";
 

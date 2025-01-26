@@ -55,16 +55,21 @@ public class AccountService {
         }
     }
 
+    // CHECK BALANCE
+    public double checkBalance(int accountId) {
+        Account account = accountDAO.getAccountByUserId(accountId);
+
+        if (account != null) {
+            return account.getBalance();
+        } else {
+            System.out.println("Account not found.");
+            return 0.0;
+        }
+    }
+
+
     /*
     public double checkBalance(){
-
-    }
-
-    public void withdraw() {
-
-    }
-
-    public void deposit(){
 
     }
 

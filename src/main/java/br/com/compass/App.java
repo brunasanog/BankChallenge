@@ -77,19 +77,19 @@ public class App {
 
             switch (option) {
                 case 1:
-
+                    System.out.println("Deposit.");
                     Account account = accountService.getAccountByUserId(user.getId());
                     userInteraction.deposit(account);
-                    System.out.println("Deposit.");
                     break;
                 case 2:
+                    System.out.println("Withdraw.");
                     Account accountForWithdraw = accountService.getAccountByUserId(user.getId());
                     userInteraction.withdraw(accountForWithdraw);
-                    System.out.println("Withdraw.");
                     break;
                 case 3:
-                    // ToDo...
                     System.out.println("Check Balance.");
+                    Account accountForBalance = accountService.getAccountByUserId(user.getId());
+                    userInteraction.checkBalance(accountForBalance);
                     break;
                 case 4:
                     // ToDo...

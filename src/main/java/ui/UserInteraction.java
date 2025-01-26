@@ -203,8 +203,11 @@ public class UserInteraction {
         accountService.withdrawFromAccount(account.getId(), amount);
     }
 
-
-
+    //----------------------------CHECK BALANCE----------------------------
+    public void checkBalance(Account account) {
+        double balance = accountService.checkBalance(account.getId());
+        System.out.println(String.format("Your current balance is: R$%.2f", balance));
+    }
 
 
 
