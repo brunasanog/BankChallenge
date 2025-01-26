@@ -97,8 +97,9 @@ public class App {
                     userInteraction.transfer(accountForTransfer);
                     break;
                 case 5:
-                    // ToDo...
                     System.out.println("Bank Statement.");
+                    Account accountForTransactions = accountService.getAccountByUserId(user.getId());
+                    userInteraction.viewTransactions(accountForTransactions);
                     break;
                 case 0:
                     // ToDo...

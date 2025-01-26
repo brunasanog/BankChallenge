@@ -1,25 +1,22 @@
 package model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Transaction {
     private int id;
-    private String transactionType;
-    private double amount;
-    private LocalDate transactionDate;
     private int accountId;
+    private String transactionType; // "WITHDRAWAL", "DEPOSIT", "TRANSFER"
+    private double amount;
+    private LocalDateTime transactionDate; // Usar LocalDateTime para armazenar data e hora
 
-    public Transaction() {
-    }
-
-    public Transaction(int id, String transactionType, double amount, LocalDate transactionDate, int accountId) {
-        this.id = id;
+    public Transaction(int accountId, String transactionType, double amount) {
+        this.accountId = accountId;
         this.transactionType = transactionType;
         this.amount = amount;
-        this.transactionDate = transactionDate;
-        this.accountId = accountId;
+        this.transactionDate = LocalDateTime.now(); // Define a data e hora atual
     }
 
+    // Getters e Setters
     public int getId() {
         return id;
     }
@@ -28,35 +25,20 @@ public class Transaction {
         this.id = id;
     }
 
-    public String getTransactionType() {
-        return transactionType;
+    public int getAccountId() {
+        return accountId;
     }
 
-    public void setTransactionType(String transactionType) {
-        this.transactionType = transactionType;
+    public String getTransactionType() {
+        return transactionType;
     }
 
     public double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public LocalDate getTransactionDate() {
+    public LocalDateTime getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(LocalDate transactionDate) {
-        this.transactionDate = transactionDate;
-    }
-
-    public int getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
-    }
 }

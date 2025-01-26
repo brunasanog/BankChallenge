@@ -1,7 +1,9 @@
 package service;
 
 import dao.AccountDAO;
+import dao.TransactionDAO;
 import model.Account;
+import model.Transaction;
 
 public class AccountService {
 
@@ -19,8 +21,8 @@ public class AccountService {
     }
 
     //GET ACCOUNT TYPE BY USER ID
-    public String getAccountTypeByUserId(int userId) {
-        Account account = accountDAO.getAccountByUserId(userId);
+    public String getAccountTypeById(int userId) {
+        Account account = accountDAO.getAccountById(userId);
         if (account != null) {
             return account.getAccountType();
         } else {
@@ -30,11 +32,16 @@ public class AccountService {
 
     //DEPOSIT
     public void depositToAccount(int accountId, double amount) {
-        Account account = accountDAO.getAccountByUserId(accountId);
+        Account account = accountDAO.getAccountById(accountId);
 
         if (account != null) {
             account.setBalance(account.getBalance() + amount);
             accountDAO.updateAccount(account);
+
+            Transaction transaction = new Transaction(accountId, "DEPOSIT", amount);
+            TransactionDAO transactionDAO = new TransactionDAO();
+            transactionDAO.createTransaction(transaction);
+
             System.out.println(String.format("Deposit of R$%.2f successfully made to account ID: %d%nYour new balance is: R$%.2f", amount, accountId, account.getBalance()));
         } else {
             System.out.println("Account not found.");
@@ -43,7 +50,7 @@ public class AccountService {
 
     //WITHDRAW
     public void withdrawFromAccount(int accountId, double amount) {
-        Account account = accountDAO.getAccountByUserId(accountId);
+        Account account = accountDAO.getAccountById(accountId);
 
         if (account != null) {
             if (amount <= 0) {
@@ -58,8 +65,14 @@ public class AccountService {
 
             account.setBalance(account.getBalance() - amount);
             accountDAO.updateAccount(account);
+
+            // Registrar a transação
+            Transaction transaction = new Transaction(accountId, "WITHDRAW", amount);
+            TransactionDAO transactionDAO = new TransactionDAO();
+            transactionDAO.createTransaction(transaction);
+
             System.out.println(String.format("Withdrawal of R$%.2f successfully made from account ID: %d%n" +
-                                             "Your new balance is: R$%.2f", amount, accountId, account.getBalance()));
+                    "Your new balance is: R$%.2f", amount, accountId, account.getBalance()));
         } else {
             System.out.println("Account not found.");
         }
@@ -67,7 +80,7 @@ public class AccountService {
 
     // CHECK BALANCE
     public double checkBalance(int accountId) {
-        Account account = accountDAO.getAccountByUserId(accountId);
+        Account account = accountDAO.getAccountById(accountId);
 
         if (account != null) {
             return account.getBalance();
@@ -79,8 +92,8 @@ public class AccountService {
 
     // TRANSFER
     public void transferBetweenAccounts(int sourceAccountId, int targetAccountId, double amount) {
-        Account sourceAccount = accountDAO.getAccountByUserId(sourceAccountId);
-        Account targetAccount = accountDAO.getAccountByUserId(targetAccountId);
+        Account sourceAccount = accountDAO.getAccountById(sourceAccountId);
+        Account targetAccount = accountDAO.getAccountById(targetAccountId);
 
         if (sourceAccount == null) {
             System.out.println("Source account not found.");
@@ -107,6 +120,10 @@ public class AccountService {
 
         accountDAO.updateAccount(sourceAccount);
         accountDAO.updateAccount(targetAccount);
+
+        Transaction transaction = new Transaction(sourceAccountId, "TRANSFER", amount);
+        TransactionDAO transactionDAO = new TransactionDAO();
+        transactionDAO.createTransaction(transaction);
 
         System.out.println(String.format("Transfer of R$%.2f successfully made from account ID: %d to account ID: %d%n" +
                 "Your new balance is: R$%.2f", amount, sourceAccountId, targetAccountId, sourceAccount.getBalance()));

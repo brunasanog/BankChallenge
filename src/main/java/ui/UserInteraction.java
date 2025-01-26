@@ -2,9 +2,12 @@ package ui;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 
+import dao.TransactionDAO;
 import model.Account;
+import model.Transaction;
 import model.User;
 import service.AccountService;
 import service.ValidationService;
@@ -210,7 +213,7 @@ public class UserInteraction {
 
     //----------------------------TRANSFER----------------------------
     public void transfer(Account sourceAccount) {
-        String accountType = accountService.getAccountTypeByUserId(sourceAccount.getId());
+        String accountType = accountService.getAccountTypeById(sourceAccount.getId());
 
         if (accountType == null) {
             System.out.println("Account not found.");
@@ -233,9 +236,21 @@ public class UserInteraction {
         accountService.transferBetweenAccounts(sourceAccount.getId(), targetAccountId, amount);
     }
 
+    //BANK STATEMENT
+    public void viewTransactions(Account account) {
+        TransactionDAO transactionDAO = new TransactionDAO();
+        List<Transaction> transactions = transactionDAO.getTransactionsByAccountId(account.getId());
 
-
-
+        if (transactions.isEmpty()) {
+            System.out.println("No transactions found for this account.");
+        } else {
+            System.out.println("Transaction History:");
+            for (Transaction transaction : transactions) {
+                System.out.println(String.format("ID: %d | Type: %s | Amount: R$%.2f | Date: %s",
+                        transaction.getId(), transaction.getTransactionType(), transaction.getAmount(), transaction.getTransactionDate()));
+            }
+        }
+    }
 
 
 

@@ -56,6 +56,31 @@ public class AccountDAO {
         return account;
     }
 
+    //GET ACCOUNT BY ID
+    public Account getAccountById(int accountId) {
+        String sql = "SELECT * FROM account WHERE id = ?";
+        Account account = null;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, accountId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                account = new Account(
+                        rs.getInt("user_id"),
+                        rs.getDouble("balance"),
+                        rs.getString("account_type")
+                );
+                account.setId(rs.getInt("id"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while retrieving account: " + e.getMessage());
+        }
+        return account;
+    }
+
     //UPDATE BALANCE
     public void updateAccount(Account account) {
         String sql = "UPDATE account SET balance = ? WHERE id = ?";
