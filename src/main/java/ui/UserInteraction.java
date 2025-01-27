@@ -207,9 +207,9 @@ public class UserInteraction {
                     System.out.print("Would you like to try again? (yes/no): ");
                     String choice = scanner.nextLine().trim().toLowerCase();
 
-                    if (choice.equals("yes") || choice.equals("sim")) {
+                    if (choice.equals("yes")) {
                         break;
-                    } else if (choice.equals("no") || choice.equals("não")) {
+                    } else if (choice.equals("no")) {
                         System.out.println("Returning to the main menu...");
                         return;
                     } else {
