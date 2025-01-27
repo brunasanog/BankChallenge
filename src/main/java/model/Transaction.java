@@ -5,15 +5,15 @@ import java.time.LocalDateTime;
 public class Transaction {
     private int id;
     private int accountId;
-    private String transactionType; // "WITHDRAWAL", "DEPOSIT", "TRANSFER"
+    private String transactionType;
     private double amount;
-    private LocalDateTime transactionDate; // Usar LocalDateTime para armazenar data e hora
+    private LocalDateTime transactionDate;
 
     public Transaction(int accountId, String transactionType, double amount) {
         this.accountId = accountId;
         this.transactionType = transactionType;
         this.amount = amount;
-        this.transactionDate = LocalDateTime.now(); // Define a data e hora atual
+        this.transactionDate = LocalDateTime.now();
     }
 
     // Getters e Setters
