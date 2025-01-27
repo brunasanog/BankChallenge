@@ -18,11 +18,6 @@ public class AccountService {
         accountDAO.createAccount(account);
     }
 
-    //GET ACCOUNT BY USER ID
-    public Account getAccountByUserId(int userId) {
-        return accountDAO.getAccountByUserId(userId);
-    }
-
     //GET ACCOUNT BY ID
     public Account getAccountById(int accountId) {
         return accountDAO.getAccountById(accountId);
@@ -45,7 +40,6 @@ public class AccountService {
         if (account != null) {
             account.setBalance(account.getBalance() + amount);
             accountDAO.updateAccount(account);
-
 
             Transaction transaction = new Transaction(accountId, TransactionType.DEPOSIT.toString(), amount);
             TransactionDAO transactionDAO = new TransactionDAO();

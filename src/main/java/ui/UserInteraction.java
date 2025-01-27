@@ -9,6 +9,7 @@ import java.util.Scanner;
 import dao.TransactionDAO;
 import model.Account;
 import model.User;
+import model.enums.AccountType;
 import service.ServiceLocator;
 
 
@@ -379,13 +380,19 @@ public class UserInteraction {
 
     //----------------------------CREATE NEW ACCOUNT----------------------------
     public void createNewAccount(User user) {
-        scanner.nextLine();
 
         List<Account> existingAccounts = serviceLocator.getAccountService().getAccountsByUserId(user.getId());
         List<String> existingAccountTypes = new ArrayList<>();
         for (Account existingAccount : existingAccounts) {
             String accountType = existingAccount.getAccountType();
             existingAccountTypes.add(accountType);
+        }
+
+        if (existingAccountTypes.contains(AccountType.CHECKING.name()) &&
+                existingAccountTypes.contains(AccountType.SAVINGS.name()) &&
+                existingAccountTypes.contains(AccountType.SALARY.name())) {
+            System.out.println("You already have all existing account types (CHECKING, SAVINGS, SALARY). You cannot create another account.");
+            return;
         }
 
         System.out.println("You already have the following account types: " + existingAccountTypes + ". " +
@@ -395,7 +402,6 @@ public class UserInteraction {
         while (true) {
             System.out.print("Enter account type to create (CHECKING, SAVINGS, SALARY): ");
             accountTypeInput = scanner.nextLine().toUpperCase();
-
 
             if (existingAccountTypes.contains(accountTypeInput)) {
                 System.out.println("You already have this type of account. Please choose a different type.\n");
