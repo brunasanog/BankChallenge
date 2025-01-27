@@ -8,7 +8,6 @@ import java.util.Scanner;
 
 import dao.TransactionDAO;
 import model.Account;
-import model.Transaction;
 import model.User;
 import service.AccountService;
 import service.ValidationService;
@@ -39,7 +38,7 @@ public class UserInteraction {
         // CPF
         String cpf;
         while (true) {
-            System.out.print("Enter cpf: ");
+            System.out.print("\nEnter cpf: ");
             cpf = scanner.nextLine();
 
             if (!validationUtil.cpfFormat(cpf)) {
@@ -131,7 +130,7 @@ public class UserInteraction {
         // PASSWORD
         String password;
         while (true) {
-            System.out.print("Enter your password: ");
+            System.out.print("Enter your password (min. 8 characters, 1 uppercase, 1 lowercase, 1 digit, 1 special character @#$%^&+=!*): ");
             password = scanner.nextLine();
 
             String passwordValidationMessage = validationService.validatePassword(password);
@@ -190,7 +189,7 @@ public class UserInteraction {
                     Account selectedAccount = accounts.get(accountChoice - 1);
                     bankMenu(scanner, user, this, selectedAccount, this.accountService);
                 } else if (accounts.size() == 1) {
-                    bankMenu(scanner, user, this, accounts.get(0), this.accountService);
+                    bankMenu(scanner, user, this, accounts.getFirst(), this.accountService);
                 } else {
                     System.out.println("No accounts found for this user.");
                 }
