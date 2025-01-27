@@ -30,29 +30,6 @@ public class TransactionDAO extends BaseDAO {
         return generatedId;
     }
 
-    /* RETURN TRANSACTION
-    public List<Transaction> getTransactionsByAccountId(int accountId) {
-        String sql = "SELECT * FROM transaction WHERE account_id = ? ORDER BY transaction_date DESC";
-        return executeQuery(sql, stmt -> {
-            stmt.setInt(1, accountId);
-            ResultSet rs = stmt.executeQuery();
-            List<Transaction> transactions = new ArrayList<>();
-
-            while (rs.next()) {
-                Transaction transaction = new Transaction(
-                        rs.getInt("account_id"),
-                        rs.getString("transaction_type"),
-                        rs.getDouble("amount")
-                );
-                transaction.setId(rs.getInt("id"));
-                transaction.setTransactionDate(rs.getTimestamp("transaction_date").toLocalDateTime());
-                transactions.add(transaction);
-            }
-            return transactions;
-        });
-    }
-    */
-
     // GET FORMATTED TRANSACTIONS
     public List<String> getFormattedTransactionsByAccountId(int accountId) {
         String sql = "SELECT * FROM transaction WHERE account_id = ? ORDER BY transaction_date DESC";

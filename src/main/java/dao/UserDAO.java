@@ -6,9 +6,8 @@ import java.sql.*;
 
 public class UserDAO extends BaseDAO {
 
-
     // CREATE USER
-    public int createUser (User user) {
+    public int createUser(User user) {
         String sql = "INSERT INTO user (cpf, name, email, phone, birth_date, account_type, password) VALUES (?,?,?,?,?,?,?)";
 
         return executeUpdateWithGeneratedKeys(sql, stmt -> {
