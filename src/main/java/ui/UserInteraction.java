@@ -150,8 +150,16 @@ public class UserInteraction {
                 continue;
             }
 
-            System.out.print("Enter password: ");
-            String password = scanner.nextLine();
+            String password;
+            while (true) {
+                System.out.print("Enter password: ");
+                password = scanner.nextLine();
+
+                if (!serviceLocator.getValidationService().isInputValid(password)) {
+                    continue;
+                }
+                break;
+            }
 
             User user = serviceLocator.getUserService().login(cpf, password);
             if (user != null) {
