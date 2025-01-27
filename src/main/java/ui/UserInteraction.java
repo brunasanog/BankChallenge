@@ -300,7 +300,7 @@ public class UserInteraction {
         scanner.nextLine();
 
         if (targetAccountId == sourceAccount.getId()) {
-            System.out.println("Invalid operation: You cannot transfer money to the same account.\n");
+            System.out.println("Invalid operation: You cannot transfer money to the same account.");
             return;
         }
 
