@@ -12,7 +12,9 @@ public class User {
     private String accountType;
     private String password;
 
-    // Construtor
+    public User() {
+    }
+
     public User(String cpf, String name, String email, String phone, LocalDate birthDate, String accountType, String password) {
         this.cpf = cpf;
         this.name = name;
@@ -60,28 +62,4 @@ public class User {
         return password;
     }
 
-    // Setters
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public void setAccountType(String accountType) {
-        this.accountType = accountType;
-    }
 }

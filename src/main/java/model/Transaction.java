@@ -9,6 +9,9 @@ public class Transaction {
     private double amount;
     private LocalDateTime transactionDate;
 
+    public Transaction() {
+    }
+
     public Transaction(int accountId, String transactionType, double amount) {
         this.accountId = accountId;
         this.transactionType = transactionType;
@@ -16,7 +19,6 @@ public class Transaction {
         this.transactionDate = LocalDateTime.now();
     }
 
-    // Getters e Setters
     public int getId() {
         return id;
     }
@@ -40,9 +42,4 @@ public class Transaction {
     public LocalDateTime getTransactionDate() {
         return transactionDate;
     }
-
-    public void setTransactionDate(LocalDateTime transactionDate) {
-        this.transactionDate = transactionDate;
-    }
-
 }

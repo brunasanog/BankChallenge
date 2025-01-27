@@ -1,7 +1,5 @@
 package model;
 
-import java.time.LocalDate;
-
 public class Account {
     private int id;
     private int userId;
@@ -29,10 +27,6 @@ public class Account {
         return userId;
     }
 
-    public void setUserId(int UserId) {
-        this.userId = UserId;
-    }
-
     public double getBalance() {
         return balance;
     }
@@ -43,10 +37,6 @@ public class Account {
 
     public String getAccountType() {
         return accountType;
-    }
-
-    public void setAccountType(String accountType) {
-        this.accountType = accountType;
     }
 
 }
