@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import br.com.compass.App;
 import dao.TransactionDAO;
 import model.Account;
 import model.User;
@@ -418,6 +419,10 @@ public class UserInteraction {
         }
 
         serviceLocator.getAccountService().createAccount(user.getId(), accountTypeInput);
-        System.out.println("Account of type " + accountTypeInput + " created successfully.");
+        System.out.println("Your " + accountTypeInput + " account has been created successfully.\n" +
+                           "Please log in again to access your accounts.");
+
+        App.mainMenu(scanner, this, serviceLocator);
     }
+
 }
