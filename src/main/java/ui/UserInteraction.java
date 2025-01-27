@@ -33,11 +33,15 @@ public class UserInteraction {
             System.out.print("\nEnter cpf: ");
             cpf = scanner.nextLine();
 
-            if (!serviceLocator.getValidationUtil().cpfFormat(cpf)) {
+            String cpfValidationMessage = serviceLocator.getValidationService().validateCpfFormat(cpf);
+            if (cpfValidationMessage != null) {
+                System.out.println(cpfValidationMessage);
                 continue;
             }
 
-            if (!serviceLocator.getValidationUtil().cpfRegistered(cpf)) {
+            String cpfRegisteredMessage = serviceLocator.getValidationService().isCpfRegistered(cpf);
+            if (cpfRegisteredMessage != null) {
+                System.out.println(cpfRegisteredMessage);
                 return;
             }
 
@@ -146,7 +150,9 @@ public class UserInteraction {
             System.out.print("\nEnter CPF: ");
             String cpf = scanner.nextLine();
 
-            if (!serviceLocator.getValidationUtil().cpfFormat(cpf)) {
+            String cpfValidationMessage = serviceLocator.getValidationService().validateCpfFormat(cpf);
+            if (cpfValidationMessage != null) {
+                System.out.println(cpfValidationMessage);
                 continue;
             }
 
