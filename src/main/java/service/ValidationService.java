@@ -192,7 +192,7 @@ public class ValidationService {
     //VALIDATE STRING
     public boolean isInputValid(String input) {
         if (input == null || input.trim().isEmpty()) {
-            System.out.println("Input cannot be empty! Please try again.\n");
+            System.out.println("Input cannot be empty! Please try again.");
             return false;
         }
         return true;

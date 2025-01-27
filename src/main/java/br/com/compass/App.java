@@ -83,7 +83,7 @@ public class App {
                     selectedAccount.getBalance());
 
             System.out.print("Choose an option: ");
-            String input = scanner.next();
+            String input = scanner.nextLine();
 
             if (!serviceLocator.getValidationService().isInputValid(input)) {
                 continue;

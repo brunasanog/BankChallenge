@@ -216,7 +216,7 @@ public class UserInteraction {
 
     //----------------------------DEPOSIT----------------------------
     public void deposit(Account account) {
-        scanner.nextLine();
+
         while (true) {
             System.out.print("Enter the amount to deposit: ");
             String input = scanner.nextLine().trim();
@@ -248,7 +248,7 @@ public class UserInteraction {
 
     //----------------------------WITHDRAW----------------------------
     public void withdraw(Account account) {
-        scanner.nextLine();
+
         double currentBalance = serviceLocator.getAccountService().checkBalance(account.getId());
 
         while (true) {
@@ -301,7 +301,15 @@ public class UserInteraction {
         }
 
         System.out.print("Enter the target account ID: ");
+
+        if (!scanner.hasNextInt()) {
+            System.out.println("Invalid input: The account ID must be a number.");
+            scanner.nextLine();
+            return;
+        }
+
         int targetAccountId = scanner.nextInt();
+        scanner.nextLine();
 
         if (targetAccountId == sourceAccount.getId()) {
             System.out.println("Invalid operation: You cannot transfer money to the same account.");
