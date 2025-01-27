@@ -223,20 +223,20 @@ public class UserInteraction {
             }
 
             double amount;
-            
+
             try {
                 amount = Double.parseDouble(input);
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input: Please enter a valid number.\n");
                 continue;
             }
-            
+
             String validationMessage = validationService.validateDepositAmount(amount);
             if (validationMessage != null) {
                 System.out.println(validationMessage);
-                continue; 
+                continue;
             }
-            
+
             accountService.depositToAccount(account.getId(), amount);
             break;
         }
@@ -347,15 +347,15 @@ public class UserInteraction {
     //BANK STATEMENT
     public void viewTransactions(Account account) {
         TransactionDAO transactionDAO = new TransactionDAO();
-        List<Transaction> transactions = transactionDAO.getTransactionsByAccountId(account.getId());
+        List<String> formattedTransactions = transactionDAO.getFormattedTransactionsByAccountId(account.getId());
 
-        if (transactions.isEmpty()) {
+        if (formattedTransactions.isEmpty()) {
             System.out.println("No transactions found for this account.\n");
         } else {
             System.out.println("Transaction History:");
-            for (Transaction transaction : transactions) {
-                System.out.printf("ID: %d | Type: %s | Amount: R$%.2f | Date: %s%n",
-                        transaction.getId(), transaction.getTransactionType(), transaction.getAmount(), transaction.getTransactionDate());
+
+            for (String formattedTransaction : formattedTransactions) {
+                System.out.println(formattedTransaction);
             }
         }
     }
@@ -371,8 +371,8 @@ public class UserInteraction {
             existingAccountTypes.add(accountType);
         }
 
-        System.out.println("You already have the following account types: " + existingAccountTypes +
-                           ". Remember, you can't create another account of the same type.\n");
+        System.out.println("You already have the following account types: " + existingAccountTypes + ". " +
+                           "Remember, you can't create another account of the same type.\n");
 
         String accountTypeInput;
         while (true) {

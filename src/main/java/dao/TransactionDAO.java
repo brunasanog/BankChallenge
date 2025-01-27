@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class TransactionDAO {
     // RETURN TRANSACTION
     public List<Transaction> getTransactionsByAccountId(int accountId) {
         List<Transaction> transactions = new ArrayList<>();
-        String sql = "SELECT * FROM transaction WHERE account_id = ? ORDER BY transaction_date DESC"; // Corrigido para usar transaction_date
+        String sql = "SELECT * FROM transaction WHERE account_id = ? ORDER BY transaction_date DESC";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -46,12 +47,37 @@ public class TransactionDAO {
                         rs.getDouble("amount")
                 );
                 transaction.setId(rs.getInt("id"));
-                transaction.setTransactionDate(rs.getTimestamp("transaction_date").toLocalDateTime()); // Adicione esta linha para definir a data da transação
+                transaction.setTransactionDate(rs.getTimestamp("transaction_date").toLocalDateTime());
                 transactions.add(transaction);
             }
         } catch (SQLException e) {
             System.out.println("Error while retrieving transactions: " + e.getMessage());
         }
         return transactions;
+    }
+
+    public List<String> getFormattedTransactionsByAccountId(int accountId) {
+        List<String> formattedTransactions = new ArrayList<>();
+        String sql = "SELECT * FROM transaction WHERE account_id = ? ORDER BY transaction_date DESC";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, accountId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String formattedTransaction = String.format("ID: %d | Tipo: %s | Valor: R$%.2f | Date: %s",
+                        rs.getInt("id"),
+                        rs.getString("transaction_type"),
+                        rs.getDouble("amount"),
+                        rs.getTimestamp("transaction_date").toLocalDateTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+
+                formattedTransactions.add(formattedTransaction);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while retrieving transactions: " + e.getMessage());
+        }
+        return formattedTransactions;
     }
 }
