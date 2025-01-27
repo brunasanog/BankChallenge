@@ -188,13 +188,19 @@ public class UserInteraction {
 
                 loggedIn = true;
             } else {
-                System.out.println("Invalid CPF or password. Please try again.");
-                System.out.print("Would you like to try again? (yes/no): ");
-                String choice = scanner.nextLine();
+                while (true) {
+                    System.out.println("\nInvalid CPF or password. Please try again.");
+                    System.out.print("Would you like to try again? (yes/no): ");
+                    String choice = scanner.nextLine().trim().toLowerCase();
 
-                if (choice.equalsIgnoreCase("no")) {
-                    System.out.println("Returning to the main menu...");
-                    break;
+                    if (choice.equals("yes") || choice.equals("sim")) {
+                        break;
+                    } else if (choice.equals("no") || choice.equals("não")) {
+                        System.out.println("Returning to the main menu...");
+                        return;
+                    } else {
+                        System.out.println("Unrecognized input. Please enter 'yes' or 'no'.");
+                    }
                 }
             }
         }
@@ -361,7 +367,7 @@ public class UserInteraction {
         }
 
         System.out.println("You already have the following account types: " + existingAccountTypes + ". " +
-                           "Remember, you can't create another account of the same type.\n");
+                "Remember, you can't create another account of the same type.\n");
 
         String accountTypeInput;
         while (true) {

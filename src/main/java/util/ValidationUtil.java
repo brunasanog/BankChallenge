@@ -4,10 +4,10 @@ import service.ValidationService;
 
 public class ValidationUtil {
 
-    ValidationService authService = new ValidationService();
+    ValidationService validationService = new ValidationService();
 
     public boolean cpfFormat(String cpf) {
-        String cpfValidationMessage = authService.validateCpfFormat(cpf);
+        String cpfValidationMessage = validationService.validateCpfFormat(cpf);
         if (cpfValidationMessage != null) {
             System.out.println(cpfValidationMessage);
             return false;
@@ -16,7 +16,7 @@ public class ValidationUtil {
     }
 
     public boolean cpfRegistered(String cpf) {
-        String registrationMessage = authService.isCpfRegistered(cpf);
+        String registrationMessage = validationService.isCpfRegistered(cpf);
         if (registrationMessage != null) {
             System.out.println(registrationMessage);
             return false;
