@@ -30,7 +30,7 @@ public class TransactionDAO extends BaseDAO {
         return generatedId;
     }
 
-    // RETURN TRANSACTION
+    /* RETURN TRANSACTION
     public List<Transaction> getTransactionsByAccountId(int accountId) {
         String sql = "SELECT * FROM transaction WHERE account_id = ? ORDER BY transaction_date DESC";
         return executeQuery(sql, stmt -> {
@@ -51,6 +51,7 @@ public class TransactionDAO extends BaseDAO {
             return transactions;
         });
     }
+    */
 
     // GET FORMATTED TRANSACTIONS
     public List<String> getFormattedTransactionsByAccountId(int accountId) {

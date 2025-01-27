@@ -25,10 +25,10 @@ public class App {
     public static void mainMenu(Scanner scanner) {
         boolean running = true;
         UserService userService = new UserService();
-        ValidationService authService = new ValidationService();
+        ValidationService validationService = new ValidationService();
         ValidationUtil validationUtil = new ValidationUtil();
         AccountService accountService = new AccountService();
-        UserInteraction userInteraction = new UserInteraction(scanner, userService, authService, accountService, validationUtil);
+        UserInteraction userInteraction = new UserInteraction(scanner, userService, validationService, accountService, validationUtil);
 
         while (running) {
             System.out.println("\n========= Main Menu =========");
@@ -38,9 +38,14 @@ public class App {
             System.out.println("=============================");
             System.out.print("Choose an option:");
 
+            String input = scanner.nextLine();
+
+            if (!validationService.isInputValid(input)){
+                continue;
+            }
+
             try {
-                int option = scanner.nextInt();
-                scanner.nextLine();
+                int option = Integer.parseInt(input);
 
                 switch (option) {
                     case 1:
@@ -55,10 +60,10 @@ public class App {
                         running = false;
                         break;
                     default:
-                        System.out.println("Invalid option! Please try again.\n");
+                        System.out.println("Invalid option! Please try again.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input! Please enter a number.\n");
+                System.out.println("Invalid input! Please enter a number.");
                 scanner.nextLine();
             }
         }
@@ -66,6 +71,8 @@ public class App {
 
     public static void bankMenu(Scanner scanner, User user, UserInteraction userInteraction, Account selectedAccount, AccountService accountService) {
         boolean running = true;
+        ValidationService validationService = new ValidationService();
+
 
         while (running) {
 
@@ -87,8 +94,14 @@ public class App {
 
             System.out.print("Choose an option:");
 
+            String input = scanner.nextLine();
+
+            if (!validationService.isInputValid(input)){
+                continue;
+            }
+
             try {
-                int option = scanner.nextInt();
+                int option = Integer.parseInt(input);
 
                 switch (option) {
                     case 1:
@@ -120,10 +133,11 @@ public class App {
                         running = false;
                         break;
                     default:
-                        System.out.println("Invalid option! Please try again.\n");
+                        System.out.println("Invalid option! Please try again.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input! Please enter a number.\n");
+                System.out.println("Invalid input! Please enter a number.");
+                scanner.nextLine();
             }
         }
     }
