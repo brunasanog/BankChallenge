@@ -4,6 +4,7 @@ import dao.AccountDAO;
 import dao.TransactionDAO;
 import model.Account;
 import model.Transaction;
+import model.enums.TransactionType;
 
 import java.util.List;
 
@@ -45,7 +46,8 @@ public class AccountService {
             account.setBalance(account.getBalance() + amount);
             accountDAO.updateAccount(account);
 
-            Transaction transaction = new Transaction(accountId, "DEPOSIT", amount);
+
+            Transaction transaction = new Transaction(accountId, TransactionType.DEPOSIT.toString(), amount);
             TransactionDAO transactionDAO = new TransactionDAO();
             transactionDAO.createTransaction(transaction);
 
@@ -73,7 +75,7 @@ public class AccountService {
             account.setBalance(account.getBalance() - amount);
             accountDAO.updateAccount(account);
 
-            Transaction transaction = new Transaction(accountId, "WITHDRAW", amount);
+            Transaction transaction = new Transaction(accountId, TransactionType.WITHDRAW.toString(), amount);
             TransactionDAO transactionDAO = new TransactionDAO();
             transactionDAO.createTransaction(transaction);
 
@@ -126,7 +128,7 @@ public class AccountService {
         accountDAO.updateAccount(sourceAccount);
         accountDAO.updateAccount(targetAccount);
 
-        Transaction transaction = new Transaction(sourceAccountId, "TRANSFER", amount);
+        Transaction transaction = new Transaction(sourceAccountId, TransactionType.TRANSFER.toString(), amount);
         TransactionDAO transactionDAO = new TransactionDAO();
         transactionDAO.createTransaction(transaction);
 
