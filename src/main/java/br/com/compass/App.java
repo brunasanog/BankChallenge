@@ -1,34 +1,28 @@
 package br.com.compass;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import model.Account;
 import model.User;
-import service.AccountService;
+import service.ServiceLocator;
 import ui.UserInteraction;
-import service.ValidationService;
-import service.UserService;
-import util.ValidationUtil;
 
 public class App {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        mainMenu(scanner);
+        ServiceLocator serviceLocator = new ServiceLocator();
+        UserInteraction userInteraction = new UserInteraction(scanner, serviceLocator);
+
+        mainMenu(scanner, userInteraction, serviceLocator);
 
         scanner.close();
         System.out.println("Application closed");
     }
 
-    public static void mainMenu(Scanner scanner) {
+    public static void mainMenu(Scanner scanner, UserInteraction userInteraction, ServiceLocator serviceLocator) {
         boolean running = true;
-        UserService userService = new UserService();
-        ValidationService validationService = new ValidationService();
-        ValidationUtil validationUtil = new ValidationUtil();
-        AccountService accountService = new AccountService();
-        UserInteraction userInteraction = new UserInteraction(scanner, userService, validationService, accountService, validationUtil);
 
         while (running) {
             System.out.println("\n========= Main Menu =========");
@@ -36,11 +30,11 @@ public class App {
             System.out.println("|| 2. Account Opening      ||");
             System.out.println("|| 0. Exit                 ||");
             System.out.println("=============================");
-            System.out.print("Choose an option:");
+            System.out.print("Choose an option: ");
 
             String input = scanner.nextLine();
 
-            if (!validationService.isInputValid(input)){
+            if (!serviceLocator.getValidationService().isInputValid(input)) {
                 continue;
             }
 
@@ -62,20 +56,16 @@ public class App {
                     default:
                         System.out.println("Invalid option! Please try again.");
                 }
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Invalid input! Please enter a number.");
-                scanner.nextLine();
             }
         }
     }
 
-    public static void bankMenu(Scanner scanner, User user, UserInteraction userInteraction, Account selectedAccount, AccountService accountService) {
+    public static void bankMenu(Scanner scanner, User user, UserInteraction userInteraction, Account selectedAccount, ServiceLocator serviceLocator) {
         boolean running = true;
-        ValidationService validationService = new ValidationService();
-
 
         while (running) {
-
             System.out.println("\n========= Bank Menu =========");
             System.out.println("|| 1. Deposit              ||");
             System.out.println("|| 2. Withdraw             ||");
@@ -86,17 +76,16 @@ public class App {
             System.out.println("|| 0. Exit                 ||");
             System.out.println("=============================");
 
-            selectedAccount = accountService.getAccountById(selectedAccount.getId());
+            selectedAccount = serviceLocator.getAccountService().getAccountById(selectedAccount.getId());
             System.out.printf("Selected Account ID: %d | Type: %s | Balance: R$%.2f%n%n",
                     selectedAccount.getId(),
                     selectedAccount.getAccountType(),
                     selectedAccount.getBalance());
 
-            System.out.print("Choose an option:");
+            System.out.print("Choose an option: ");
+            String input = scanner.next();
 
-            String input = scanner.nextLine();
-
-            if (!validationService.isInputValid(input)){
+            if (!serviceLocator.getValidationService().isInputValid(input)) {
                 continue;
             }
 
@@ -135,9 +124,8 @@ public class App {
                     default:
                         System.out.println("Invalid option! Please try again.");
                 }
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Invalid input! Please enter a number.");
-                scanner.nextLine();
             }
         }
     }

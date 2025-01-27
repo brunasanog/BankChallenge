@@ -9,10 +9,8 @@ import java.util.Scanner;
 import dao.TransactionDAO;
 import model.Account;
 import model.User;
-import service.AccountService;
-import service.ValidationService;
-import service.UserService;
-import util.ValidationUtil;
+import service.ServiceLocator;
+
 
 import static br.com.compass.App.bankMenu;
 
@@ -20,17 +18,11 @@ import static br.com.compass.App.bankMenu;
 public class UserInteraction {
 
     private final Scanner scanner;
-    private final UserService userService;
-    private final ValidationService validationService;
-    private final AccountService accountService;
-    public final ValidationUtil validationUtil;
+    private final ServiceLocator serviceLocator;
 
-    public UserInteraction(Scanner scanner, UserService userService, ValidationService validationService, AccountService accountService, ValidationUtil validationUtil) {
+    public UserInteraction(Scanner scanner, ServiceLocator serviceLocator) {
         this.scanner = scanner;
-        this.userService = userService;
-        this.validationService = validationService;
-        this.accountService = accountService;
-        this.validationUtil = validationUtil;
+        this.serviceLocator = serviceLocator;
     }
 
 
@@ -41,11 +33,11 @@ public class UserInteraction {
             System.out.print("\nEnter cpf: ");
             cpf = scanner.nextLine();
 
-            if (!validationUtil.cpfFormat(cpf)) {
+            if (!serviceLocator.getValidationUtil().cpfFormat(cpf)) {
                 continue;
             }
 
-            if (!validationUtil.cpfRegistered(cpf)) {
+            if (!serviceLocator.getValidationUtil().cpfRegistered(cpf)) {
                 return;
             }
 
@@ -58,7 +50,7 @@ public class UserInteraction {
             System.out.print("Enter username: ");
             name = scanner.nextLine();
 
-            String nameValidationMessage = validationService.validateName(name);
+            String nameValidationMessage = serviceLocator.getValidationService().validateName(name);
             if (nameValidationMessage != null) {
                 System.out.println(nameValidationMessage);
                 continue;
@@ -72,7 +64,7 @@ public class UserInteraction {
             System.out.print("Enter email: ");
             email = scanner.nextLine();
 
-            String emailValidationMessage = validationService.validateEmail(email);
+            String emailValidationMessage = serviceLocator.getValidationService().validateEmail(email);
             if (emailValidationMessage != null) {
                 System.out.println(emailValidationMessage);
                 continue;
@@ -86,7 +78,7 @@ public class UserInteraction {
             System.out.print("Enter phone number (DDD + XXXXXXXX): ");
             phone = scanner.nextLine();
 
-            String phoneValidationMessage = validationService.validatePhone(phone);
+            String phoneValidationMessage = serviceLocator.getValidationService().validatePhone(phone);
             if (phoneValidationMessage != null) {
                 System.out.println(phoneValidationMessage);
                 continue;
@@ -102,7 +94,7 @@ public class UserInteraction {
             System.out.print("Enter your birth date (dd/MM/yyyy): ");
             birthDateInput = scanner.nextLine();
 
-            String birthDateValidationMessage = validationService.validateBirthDate(birthDateInput);
+            String birthDateValidationMessage = serviceLocator.getValidationService().validateBirthDate(birthDateInput);
             if (birthDateValidationMessage != null) {
                 System.out.println(birthDateValidationMessage);
                 continue;
@@ -118,7 +110,7 @@ public class UserInteraction {
             System.out.print("Enter account type (CHECKING, SAVINGS, SALARY): ");
             accountTypeInput = scanner.nextLine();
 
-            String accountTypeValidationMessage = validationService.validateAccountType(accountTypeInput);
+            String accountTypeValidationMessage = serviceLocator.getValidationService().validateAccountType(accountTypeInput);
             if (accountTypeValidationMessage != null) {
                 System.out.println(accountTypeValidationMessage);
                 continue;
@@ -133,7 +125,7 @@ public class UserInteraction {
             System.out.print("Enter your password (min. 8 characters, 1 uppercase, 1 lowercase, 1 digit, 1 special character @#$%^&+=!*): ");
             password = scanner.nextLine();
 
-            String passwordValidationMessage = validationService.validatePassword(password);
+            String passwordValidationMessage = serviceLocator.getValidationService().validatePassword(password);
             if (passwordValidationMessage != null) {
                 System.out.println(passwordValidationMessage);
                 continue;
@@ -142,7 +134,7 @@ public class UserInteraction {
         }
 
         // ACCOUNT CREATED
-        userService.createUser(cpf, name, email, phone, birthDate, accountTypeInput, password);
+        serviceLocator.getUserService().createUser(cpf, name, email, phone, birthDate, accountTypeInput, password);
         System.out.println("Account Opening.");
     }
 
@@ -154,18 +146,18 @@ public class UserInteraction {
             System.out.print("\nEnter CPF: ");
             String cpf = scanner.nextLine();
 
-            if (!validationUtil.cpfFormat(cpf)) {
+            if (!serviceLocator.getValidationUtil().cpfFormat(cpf)) {
                 continue;
             }
 
             System.out.print("Enter password: ");
             String password = scanner.nextLine();
 
-            User user = userService.login(cpf, password);
+            User user = serviceLocator.getUserService().login(cpf, password);
             if (user != null) {
                 System.out.println("\nLogin successful! Welcome, " + user.getName() + "!");
 
-                List<Account> accounts = accountService.getAccountsByUserId(user.getId());
+                List<Account> accounts = serviceLocator.getAccountService().getAccountsByUserId(user.getId());
 
                 if (accounts.size() > 1) {
                     System.out.println("You have multiple accounts. Please choose one to continue:\n");
@@ -187,9 +179,9 @@ public class UserInteraction {
                     }
 
                     Account selectedAccount = accounts.get(accountChoice - 1);
-                    bankMenu(scanner, user, this, selectedAccount, this.accountService);
+                    bankMenu(scanner, user, this, selectedAccount, this.serviceLocator);
                 } else if (accounts.size() == 1) {
-                    bankMenu(scanner, user, this, accounts.getFirst(), this.accountService);
+                    bankMenu(scanner, user, this, accounts.getFirst(), this.serviceLocator);
                 } else {
                     System.out.println("No accounts found for this user.");
                 }
@@ -211,7 +203,6 @@ public class UserInteraction {
     //----------------------------DEPOSIT----------------------------
     public void deposit(Account account) {
         scanner.nextLine();
-
         while (true) {
             System.out.print("Enter the amount to deposit: ");
             String input = scanner.nextLine().trim();
@@ -230,13 +221,13 @@ public class UserInteraction {
                 continue;
             }
 
-            String validationMessage = validationService.validateDepositAmount(amount);
+            String validationMessage = serviceLocator.getValidationService().validateDepositAmount(amount);
             if (validationMessage != null) {
                 System.out.println(validationMessage);
                 continue;
             }
 
-            accountService.depositToAccount(account.getId(), amount);
+            serviceLocator.getAccountService().depositToAccount(account.getId(), amount);
             break;
         }
     }
@@ -244,7 +235,7 @@ public class UserInteraction {
     //----------------------------WITHDRAW----------------------------
     public void withdraw(Account account) {
         scanner.nextLine();
-        double currentBalance = accountService.checkBalance(account.getId());
+        double currentBalance = serviceLocator.getAccountService().checkBalance(account.getId());
 
         while (true) {
             System.out.print("Enter the amount to withdraw: ");
@@ -264,26 +255,26 @@ public class UserInteraction {
                 continue;
             }
 
-            String validationMessage = validationService.validateWithdrawAmount(amount, currentBalance);
+            String validationMessage = serviceLocator.getValidationService().validateWithdrawAmount(amount, currentBalance);
             if (validationMessage != null) {
                 System.out.println(validationMessage);
                 continue;
             }
 
-            accountService.withdrawFromAccount(account.getId(), amount);
+            serviceLocator.getAccountService().withdrawFromAccount(account.getId(), amount);
             break;
         }
     }
 
     //----------------------------CHECK BALANCE----------------------------
     public void checkBalance(Account account) {
-        double balance = accountService.checkBalance(account.getId());
+        double balance = serviceLocator.getAccountService().checkBalance(account.getId());
         System.out.printf("Your current balance is: R$%.2f%n", balance);
     }
 
     //----------------------------TRANSFER----------------------------
     public void transfer(Account sourceAccount) {
-        String accountType = accountService.getAccountTypeById(sourceAccount.getId());
+        String accountType = serviceLocator.getAccountService().getAccountTypeById(sourceAccount.getId());
 
         if (accountType == null) {
             System.out.println("Account not found.\n");
@@ -297,15 +288,14 @@ public class UserInteraction {
 
         System.out.print("Enter the target account ID: ");
         int targetAccountId = scanner.nextInt();
-        scanner.nextLine();
 
         if (targetAccountId == sourceAccount.getId()) {
             System.out.println("Invalid operation: You cannot transfer money to the same account.");
             return;
         }
 
-        Account targetAccount = accountService.getAccountById(targetAccountId);
-        String accountValidationMessage = validationService.validateAccountExistence(targetAccount);
+        Account targetAccount = serviceLocator.getAccountService().getAccountById(targetAccountId);
+        String accountValidationMessage = serviceLocator.getValidationService().validateAccountExistence(targetAccount);
         if (accountValidationMessage != null) {
             System.out.println(accountValidationMessage);
             return;
@@ -328,19 +318,19 @@ public class UserInteraction {
             return;
         }
 
-        double currentBalance = accountService.checkBalance(sourceAccount.getId());
+        double currentBalance = serviceLocator.getAccountService().checkBalance(sourceAccount.getId());
         if (amount > currentBalance) {
             System.out.println("Insufficient funds for this transfer.");
             return;
         }
 
-        String validationMessage = validationService.validateTransferAmount(amount);
+        String validationMessage = serviceLocator.getValidationService().validateTransferAmount(amount);
         if (validationMessage != null) {
             System.out.println(validationMessage);
             return;
         }
 
-        accountService.transferBetweenAccounts(sourceAccount.getId(), targetAccountId, amount);
+        serviceLocator.getAccountService().transferBetweenAccounts(sourceAccount.getId(), targetAccountId, amount);
     }
 
     //BANK STATEMENT
@@ -363,7 +353,7 @@ public class UserInteraction {
     public void createNewAccount(User user) {
         scanner.nextLine();
 
-        List<Account> existingAccounts = accountService.getAccountsByUserId(user.getId());
+        List<Account> existingAccounts = serviceLocator.getAccountService().getAccountsByUserId(user.getId());
         List<String> existingAccountTypes = new ArrayList<>();
         for (Account existingAccount : existingAccounts) {
             String accountType = existingAccount.getAccountType();
@@ -384,7 +374,7 @@ public class UserInteraction {
                 continue;
             }
 
-            String accountTypeValidationMessage = validationService.validateAccountType(accountTypeInput);
+            String accountTypeValidationMessage = serviceLocator.getValidationService().validateAccountType(accountTypeInput);
             if (accountTypeValidationMessage != null) {
                 System.out.println(accountTypeValidationMessage);
                 continue;
@@ -393,7 +383,7 @@ public class UserInteraction {
             break;
         }
 
-        accountService.createAccount(user.getId(), accountTypeInput);
+        serviceLocator.getAccountService().createAccount(user.getId(), accountTypeInput);
         System.out.println("Account of type " + accountTypeInput + " created successfully.");
     }
 }
