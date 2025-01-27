@@ -2,7 +2,7 @@ package service;
 
 import dao.UserDAO;
 import model.Account;
-import model.AccountType;
+import model.enums.AccountType;
 
 import java.time.LocalDate;
 import java.time.Period;
