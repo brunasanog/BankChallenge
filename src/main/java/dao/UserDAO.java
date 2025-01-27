@@ -8,11 +8,10 @@ public class UserDAO extends BaseDAO {
 
 
     // CREATE USER
-    public int createUser(User user) {
+    public int createUser (User user) {
         String sql = "INSERT INTO user (cpf, name, email, phone, birth_date, account_type, password) VALUES (?,?,?,?,?,?,?)";
-        final int[] generatedId = {-1};
 
-        executeUpdate(sql, stmt -> {
+        return executeUpdateWithGeneratedKeys(sql, stmt -> {
             stmt.setString(1, user.getCpf());
             stmt.setString(2, user.getName());
             stmt.setString(3, user.getEmail());
@@ -21,17 +20,6 @@ public class UserDAO extends BaseDAO {
             stmt.setString(6, user.getAccountType());
             stmt.setString(7, user.getPassword());
         });
-
-        String idSql = "SELECT LAST_INSERT_ID()";
-        executeQuery(idSql, stmt -> {
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                generatedId[0] = rs.getInt(1);
-            }
-            return null;
-        });
-
-        return generatedId[0];
     }
 
     // CHECK CPF

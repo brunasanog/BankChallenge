@@ -28,6 +28,26 @@ public abstract class BaseDAO {
         }
     }
 
+    //RETURN ID
+    protected int executeUpdateWithGeneratedKeys(String sql, PreparedStatementSetter setter) {
+        int generatedId = -1;
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            setter.setValues(stmt);
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        generatedId = generatedKeys.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while executing update: " + e.getMessage());
+        }
+        return generatedId;
+    }
+
     @FunctionalInterface
     interface QueryExecutor<T> {
         T execute(PreparedStatement stmt) throws SQLException;
@@ -37,4 +57,6 @@ public abstract class BaseDAO {
     interface PreparedStatementSetter {
         void setValues(PreparedStatement stmt) throws SQLException;
     }
+
+
 }

@@ -11,21 +11,19 @@ public class AccountDAO extends BaseDAO {
     // CREATE ACCOUNT
     public void createAccount(Account account) {
         String sql = "INSERT INTO account (user_id, balance, account_type) VALUES (?, ?, ?)";
-        executeUpdate(sql, stmt -> {
+
+        int generatedId = executeUpdateWithGeneratedKeys(sql, stmt -> {
             stmt.setInt(1, account.getUserId());
             stmt.setDouble(2, account.getBalance());
             stmt.setString(3, account.getAccountType());
         });
 
-        String idSql = "SELECT LAST_INSERT_ID()";
-        executeQuery(idSql, stmt -> {
-            ResultSet generatedKeys = stmt.executeQuery();
-            if (generatedKeys.next()) {
-                account.setId(generatedKeys.getInt(1));
-                System.out.println("\nAccount created with ID: " + account.getId());
-            }
-            return null;
-        });
+        if (generatedId > 0) {
+            account.setId(generatedId);
+            System.out.println("\nAccount created with ID: " + account.getId());
+        } else {
+            System.out.println("Failed to create account.");
+        }
     }
 
     // GET ACCOUNT BY USER ID
