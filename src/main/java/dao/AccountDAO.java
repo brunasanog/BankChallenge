@@ -26,25 +26,6 @@ public class AccountDAO extends BaseDAO {
         }
     }
 
-    // GET ACCOUNT BY USER ID
-    public Account getAccountByUserId(int userId) {
-        String sql = "SELECT * FROM account WHERE user_id = ?";
-        return executeQuery(sql, stmt -> {
-            stmt.setInt(1, userId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                Account account = new Account(
-                        rs.getInt("user_id"),
-                        rs.getDouble("balance"),
-                        rs.getString("account_type")
-                );
-                account.setId(rs.getInt("id"));
-                return account;
-            }
-            return null;
-        });
-    }
-
     // GET ACCOUNT BY ID
     public Account getAccountById(int accountId) {
         String sql = "SELECT * FROM account WHERE id = ?";

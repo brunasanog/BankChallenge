@@ -126,7 +126,7 @@ public class AccountService {
         TransactionDAO transactionDAO = new TransactionDAO();
         transactionDAO.createTransaction(transaction);
 
-        System.out.printf("\nTransfer of R$%.2f successfully made from account ID: %d to account ID: %d%n", amount, sourceAccountId, targetAccountId);
+        System.out.printf("Transfer of R$%.2f successfully made from account ID: %d to account ID: %d%n", amount, sourceAccountId, targetAccountId);
     }
 
     //RETURN ALL COUNTS FROM USER

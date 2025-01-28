@@ -204,19 +204,10 @@ public class UserInteraction {
 
                 loggedIn = true;
             } else {
-                while (true) {
-                    System.out.println("\nInvalid CPF or password. Please try again.");
-                    System.out.print("Would you like to try again? (yes/no): ");
-                    String choice = scanner.nextLine().trim().toLowerCase();
+                System.out.println("\nInvalid CPF or password.");
 
-                    if (choice.equals("yes")) {
-                        break;
-                    } else if (choice.equals("no")) {
-                        System.out.println("Returning to the main menu...");
-                        return;
-                    } else {
-                        System.out.println("Unrecognized input. Please enter 'yes' or 'no'.");
-                    }
+                if (!promptForRetry()) {
+                    return;
                 }
             }
         }
@@ -231,6 +222,9 @@ public class UserInteraction {
 
             if (input.isEmpty()) {
                 System.out.println("Invalid input: Please enter a valid number.\n");
+                if (!promptForRetry()) {
+                    return;
+                }
                 continue;
             }
 
@@ -240,12 +234,18 @@ public class UserInteraction {
                 amount = Double.parseDouble(input);
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input: Please enter a valid number.\n");
+                if (!promptForRetry()) {
+                    return;
+                }
                 continue;
             }
 
             String validationMessage = serviceLocator.getValidationService().validateDepositAmount(amount);
             if (validationMessage != null) {
                 System.out.println(validationMessage);
+                if (!promptForRetry()) {
+                    return;
+                }
                 continue;
             }
 
@@ -265,6 +265,9 @@ public class UserInteraction {
 
             if (input.isEmpty()) {
                 System.out.println("Invalid input: Please enter a valid number.\n");
+                if (!promptForRetry()) {
+                    return;
+                }
                 continue;
             }
 
@@ -274,12 +277,18 @@ public class UserInteraction {
                 amount = Double.parseDouble(input);
             } catch (NumberFormatException e) {
                 System.out.println("\nInvalid input: Please enter a valid number.\n");
+                if (!promptForRetry()) {
+                    return;
+                }
                 continue;
             }
 
             String validationMessage = serviceLocator.getValidationService().validateWithdrawAmount(amount, currentBalance);
             if (validationMessage != null) {
                 System.out.println(validationMessage);
+                if (!promptForRetry()) {
+                    return;
+                }
                 continue;
             }
 
@@ -300,67 +309,94 @@ public class UserInteraction {
 
         if (accountType == null) {
             System.out.println("Account not found.\n");
+            if (!promptForRetry()) {
+                return;
+            }
             return;
         }
 
         if (!accountType.equalsIgnoreCase("CHECKING")) {
-            System.out.println("\nTransfers are only allowed from CHECKING accounts.");
+            System.out.println("Transfers are only allowed from CHECKING accounts.");
             return;
         }
 
-        System.out.print("Enter the target account ID: ");
+        while (true) {
+            System.out.print("Enter the target account ID: ");
 
-        if (!scanner.hasNextInt()) {
-            System.out.println("Invalid input: The account ID must be a number.");
+            if (!scanner.hasNextInt()) {
+                System.out.println("Invalid input: The account ID must be a number.\n");
+                scanner.nextLine();
+                if (!promptForRetry()) {
+                    return;
+                }
+                continue;
+            }
+
+            int targetAccountId = scanner.nextInt();
             scanner.nextLine();
-            return;
+
+            if (targetAccountId == sourceAccount.getId()) {
+                System.out.println("Invalid operation: You cannot transfer money to the same account.\n");
+                if (!promptForRetry()) {
+                    return;
+                }
+                continue;
+            }
+
+            Account targetAccount = serviceLocator.getAccountService().getAccountById(targetAccountId);
+            String accountValidationMessage = serviceLocator.getValidationService().validateAccountExistence(targetAccount);
+            if (accountValidationMessage != null) {
+                System.out.println(accountValidationMessage);
+                if (!promptForRetry()) {
+                    return;
+                }
+                continue;
+            }
+
+            System.out.print("Enter the amount to transfer: ");
+            String input = scanner.nextLine().trim();
+
+            if (input.isEmpty()) {
+                System.out.println("Invalid input: Please enter a valid number.\n");
+                if (!promptForRetry()) {
+                    return;
+                }
+                continue;
+            }
+
+            double amount;
+
+            try {
+                amount = Double.parseDouble(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input: Please enter a valid number.\n");
+                if (!promptForRetry()) {
+                    return;
+                }
+                continue;
+            }
+
+            double currentBalance = serviceLocator.getAccountService().checkBalance(sourceAccount.getId());
+            if (amount > currentBalance) {
+                System.out.println("Insufficient funds for this transfer.\n");
+                if (!promptForRetry()) {
+                    return;
+                }
+                continue;
+            }
+
+            String validationMessage = serviceLocator.getValidationService().validateTransferAmount(amount);
+            if (validationMessage != null) {
+                System.out.println(validationMessage);
+                if (!promptForRetry()) {
+                    return;
+                }
+                continue;
+            }
+
+            serviceLocator.getAccountService().transferBetweenAccounts(sourceAccount.getId(), targetAccountId, amount);
+            break;
         }
-
-        int targetAccountId = scanner.nextInt();
-        scanner.nextLine();
-
-        if (targetAccountId == sourceAccount.getId()) {
-            System.out.println("Invalid operation: You cannot transfer money to the same account.");
-            return;
-        }
-
-        Account targetAccount = serviceLocator.getAccountService().getAccountById(targetAccountId);
-        String accountValidationMessage = serviceLocator.getValidationService().validateAccountExistence(targetAccount);
-        if (accountValidationMessage != null) {
-            System.out.println(accountValidationMessage);
-            return;
-        }
-
-        System.out.print("Enter the amount to transfer: ");
-        String input = scanner.nextLine().trim();
-
-        if (input.isEmpty()) {
-            System.out.println("Invalid input: Please enter a valid number.\n");
-            return;
-        }
-
-        double amount;
-
-        try {
-            amount = Double.parseDouble(input);
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input: Please enter a valid number.\n");
-            return;
-        }
-
-        double currentBalance = serviceLocator.getAccountService().checkBalance(sourceAccount.getId());
-        if (amount > currentBalance) {
-            System.out.println("Insufficient funds for this transfer.");
-            return;
-        }
-
-        String validationMessage = serviceLocator.getValidationService().validateTransferAmount(amount);
-        if (validationMessage != null) {
-            System.out.println(validationMessage);
-            return;
-        }
-
-        serviceLocator.getAccountService().transferBetweenAccounts(sourceAccount.getId(), targetAccountId, amount);
     }
 
     //BANK STATEMENT
@@ -420,9 +456,25 @@ public class UserInteraction {
 
         serviceLocator.getAccountService().createAccount(user.getId(), accountTypeInput);
         System.out.println("Your " + accountTypeInput + " account has been created successfully.\n" +
-                           "Please log in again to access your accounts.");
+                "Please log in again to access your accounts.");
 
         App.mainMenu(scanner, this, serviceLocator);
     }
 
+    private boolean promptForRetry() {
+        while (true) {
+            System.out.print("Would you like to try again? (y/n): ");
+            String choice = scanner.nextLine().trim().toLowerCase();
+
+            if (choice.equals("y")) {
+                return true;
+            } else if (choice.equals("n")) {
+                System.out.println("Returning to the main menu...");
+                return false;
+            } else {
+                System.out.println("Unrecognized input. Please enter 'y' or 'n'.\n");
+            }
+        }
+
+    }
 }
