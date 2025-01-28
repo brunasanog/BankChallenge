@@ -103,13 +103,16 @@ O banco de dados é composto por três tabelas principais: `user`, `account` e `
 
 ## Considerações Finais
 
-Este sistema é uma implementação simples de um banco de dados para gerenciar contas bancárias e transações, com validações de dados e um fluxo de operações bancárias. Ele serve como base para um sistema maior e mais complexo, podendo ser expandido para incluir funcionalidades como transferências entre contas e outras formas de validação.
+Este sistema é uma implementação simples de um banco de dados para gerenciar contas bancárias e transações, com validações de dados e um fluxo de operações bancárias. 
 
+Este projeto foi desenvolvido por Bruna Sanog para o desafio 2 do estágio Full Cycle na empresa Compass UOL.
 
-
-
+---
 ## Stack utilizada
-
 
 **Back-end:** Java
 
+---
+*"O sucesso é a soma de pequenos esforços repetidos dia após dia." – **Robert Collier***
+
+---
