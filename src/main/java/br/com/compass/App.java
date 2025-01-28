@@ -34,7 +34,7 @@ public class App {
 
             String input = scanner.nextLine();
 
-            if (!serviceLocator.getValidationService().isInputValid(input)) {
+            if (serviceLocator.getValidationService().isInputValid(input)) {
                 continue;
             }
 
@@ -85,7 +85,7 @@ public class App {
             System.out.print("Choose an option: ");
             String input = scanner.nextLine();
 
-            if (!serviceLocator.getValidationService().isInputValid(input)) {
+            if (serviceLocator.getValidationService().isInputValid(input)) {
                 continue;
             }
 

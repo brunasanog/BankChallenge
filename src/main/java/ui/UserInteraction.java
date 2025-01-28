@@ -163,7 +163,7 @@ public class UserInteraction {
                 System.out.print("Enter password: ");
                 password = scanner.nextLine();
 
-                if (!serviceLocator.getValidationService().isInputValid(password)) {
+                if (serviceLocator.getValidationService().isInputValid(password)) {
                     continue;
                 }
                 break;
@@ -206,7 +206,7 @@ public class UserInteraction {
             } else {
                 System.out.println("\nInvalid CPF or password.");
 
-                if (!promptForRetry()) {
+                if (serviceLocator.getValidationService().promptForRetry()) {
                     return;
                 }
             }
@@ -222,7 +222,7 @@ public class UserInteraction {
 
             if (input.isEmpty()) {
                 System.out.println("Invalid input: Please enter a valid number.\n");
-                if (!promptForRetry()) {
+                if (serviceLocator.getValidationService().promptForRetry()) {
                     return;
                 }
                 continue;
@@ -234,7 +234,7 @@ public class UserInteraction {
                 amount = Double.parseDouble(input);
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input: Please enter a valid number.\n");
-                if (!promptForRetry()) {
+                if (serviceLocator.getValidationService().promptForRetry()) {
                     return;
                 }
                 continue;
@@ -243,7 +243,7 @@ public class UserInteraction {
             String validationMessage = serviceLocator.getValidationService().validateDepositAmount(amount);
             if (validationMessage != null) {
                 System.out.println(validationMessage);
-                if (!promptForRetry()) {
+                if (serviceLocator.getValidationService().promptForRetry()) {
                     return;
                 }
                 continue;
@@ -265,7 +265,7 @@ public class UserInteraction {
 
             if (input.isEmpty()) {
                 System.out.println("Invalid input: Please enter a valid number.\n");
-                if (!promptForRetry()) {
+                if (serviceLocator.getValidationService().promptForRetry()) {
                     return;
                 }
                 continue;
@@ -277,7 +277,7 @@ public class UserInteraction {
                 amount = Double.parseDouble(input);
             } catch (NumberFormatException e) {
                 System.out.println("\nInvalid input: Please enter a valid number.\n");
-                if (!promptForRetry()) {
+                if (serviceLocator.getValidationService().promptForRetry()) {
                     return;
                 }
                 continue;
@@ -286,7 +286,7 @@ public class UserInteraction {
             String validationMessage = serviceLocator.getValidationService().validateWithdrawAmount(amount, currentBalance);
             if (validationMessage != null) {
                 System.out.println(validationMessage);
-                if (!promptForRetry()) {
+                if (serviceLocator.getValidationService().promptForRetry()) {
                     return;
                 }
                 continue;
@@ -309,7 +309,7 @@ public class UserInteraction {
 
         if (accountType == null) {
             System.out.println("Account not found.\n");
-            if (!promptForRetry()) {
+            if (serviceLocator.getValidationService().promptForRetry()) {
                 return;
             }
             return;
@@ -326,7 +326,7 @@ public class UserInteraction {
 
             if (targetAccountIdInput == null || targetAccountIdInput.trim().isEmpty()) {
                 System.out.println("Invalid input: Account ID cannot be null or empty.\n");
-                if (!promptForRetry()) {
+                if (serviceLocator.getValidationService().promptForRetry()) {
                     return;
                 }
                 continue;
@@ -334,7 +334,7 @@ public class UserInteraction {
 
             if (!targetAccountIdInput.matches("\\d+")) {
                 System.out.println("Invalid input: Account ID must be a numeric value.\n");
-                if (!promptForRetry()) {
+                if (serviceLocator.getValidationService().promptForRetry()) {
                     return;
                 }
                 continue;
@@ -344,7 +344,7 @@ public class UserInteraction {
 
             if (targetAccountId == sourceAccount.getId()) {
                 System.out.println("Invalid operation: You cannot transfer money to the same account.\n");
-                if (!promptForRetry()) {
+                if (serviceLocator.getValidationService().promptForRetry()) {
                     return;
                 }
                 continue;
@@ -354,7 +354,7 @@ public class UserInteraction {
             String accountValidationMessage = serviceLocator.getValidationService().validateAccountExistence(targetAccount);
             if (accountValidationMessage != null) {
                 System.out.println(accountValidationMessage);
-                if (!promptForRetry()) {
+                if (serviceLocator.getValidationService().promptForRetry()) {
                     return;
                 }
                 continue;
@@ -365,7 +365,7 @@ public class UserInteraction {
 
             if (input.isEmpty()) {
                 System.out.println("Invalid input: Please enter a valid number.\n");
-                if (!promptForRetry()) {
+                if (serviceLocator.getValidationService().promptForRetry()) {
                     return;
                 }
                 continue;
@@ -377,7 +377,7 @@ public class UserInteraction {
                 amount = Double.parseDouble(input);
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input: Please enter a valid number.\n");
-                if (!promptForRetry()) {
+                if (serviceLocator.getValidationService().promptForRetry()) {
                     return;
                 }
                 continue;
@@ -386,7 +386,7 @@ public class UserInteraction {
             double currentBalance = serviceLocator.getAccountService().checkBalance(sourceAccount.getId());
             if (amount > currentBalance) {
                 System.out.println("Insufficient funds for this transfer.\n");
-                if (!promptForRetry()) {
+                if (serviceLocator.getValidationService().promptForRetry()) {
                     return;
                 }
                 continue;
@@ -395,7 +395,7 @@ public class UserInteraction {
             String validationMessage = serviceLocator.getValidationService().validateTransferAmount(amount);
             if (validationMessage != null) {
                 System.out.println(validationMessage);
-                if (!promptForRetry()) {
+                if (serviceLocator.getValidationService().promptForRetry()) {
                     return;
                 }
                 continue;
@@ -468,20 +468,5 @@ public class UserInteraction {
         App.mainMenu(scanner, this, serviceLocator);
     }
 
-    private boolean promptForRetry() {
-        while (true) {
-            System.out.print("Would you like to try again? (y/n): ");
-            String choice = scanner.nextLine().trim().toLowerCase();
-
-            if (choice.equals("y")) {
-                return true;
-            } else if (choice.equals("n")) {
-                System.out.println("Returning to the main menu...");
-                return false;
-            } else {
-                System.out.println("Unrecognized input. Please enter 'y' or 'n'.\n");
-            }
-        }
-
-    }
 }
+
