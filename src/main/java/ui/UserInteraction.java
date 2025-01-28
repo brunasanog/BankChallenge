@@ -322,18 +322,25 @@ public class UserInteraction {
 
         while (true) {
             System.out.print("Enter the target account ID: ");
+            String targetAccountIdInput = scanner.nextLine();
 
-            if (!scanner.hasNextInt()) {
-                System.out.println("Invalid input: The account ID must be a number.\n");
-                scanner.nextLine();
+            if (targetAccountIdInput == null || targetAccountIdInput.trim().isEmpty()) {
+                System.out.println("Invalid input: Account ID cannot be null or empty.\n");
                 if (!promptForRetry()) {
                     return;
                 }
                 continue;
             }
 
-            int targetAccountId = scanner.nextInt();
-            scanner.nextLine();
+            if (!targetAccountIdInput.matches("\\d+")) {
+                System.out.println("Invalid input: Account ID must be a numeric value.\n");
+                if (!promptForRetry()) {
+                    return;
+                }
+                continue;
+            }
+
+            int targetAccountId = Integer.parseInt(targetAccountIdInput);
 
             if (targetAccountId == sourceAccount.getId()) {
                 System.out.println("Invalid operation: You cannot transfer money to the same account.\n");
