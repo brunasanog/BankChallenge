@@ -68,7 +68,7 @@ public class UserInteraction {
         String email;
         while (true) {
             System.out.print("Enter email: ");
-            email = scanner.nextLine();
+            email = scanner.nextLine().toLowerCase();
 
             String emailValidationMessage = serviceLocator.getValidationService().validateEmail(email);
             if (emailValidationMessage != null) {
