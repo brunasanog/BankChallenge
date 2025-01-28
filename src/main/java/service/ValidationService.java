@@ -193,29 +193,10 @@ public class ValidationService {
     //VALIDATE STRING
     public boolean isInputValid(String input) {
         if (input == null || input.trim().isEmpty()) {
-            System.out.println("Input cannot be empty! Please try again.");
+            System.out.println("Input cannot be empty! Please try again.\n");
             return true;
         }
         return false;
 
-    }
-
-    //RETRY
-    public boolean promptForRetry() {
-        Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            System.out.print("Would you like to try again? (y/n): ");
-            String choice = scanner.nextLine().trim().toLowerCase();
-
-            if (choice.equals("y")) {
-                return false;
-            } else if (choice.equals("n")) {
-                System.out.println("Returning to the main menu...");
-                return true;
-            } else {
-                System.out.println("Unrecognized input. Please enter 'y' or 'n'.\n");
-            }
-        }
     }
 }
