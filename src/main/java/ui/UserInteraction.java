@@ -27,7 +27,6 @@ public class UserInteraction {
         this.serviceLocator = serviceLocator;
     }
 
-
     public void openAccount() {
         // CPF
         String cpf;
