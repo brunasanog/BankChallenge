@@ -1,5 +1,5 @@
 
-# Desafio Banco - Sistema de Gestão de Contas
+# Bank Challenge - Sistema de Gestão de Contas
 
 Este projeto visa criar um sistema de gestão de contas bancárias simples, com funcionalidades de cadastro, login, consulta de saldo, saque, depósito e visualização de extrato. O sistema utiliza um banco de dados para armazenar informações de usuários, contas e transações.
 
