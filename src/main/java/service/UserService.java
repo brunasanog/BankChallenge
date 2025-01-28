@@ -11,9 +11,9 @@ public class UserService {
     private final UserDAO userDAO = new UserDAO();
     private final AccountService accountService = new AccountService();
 
-
+    // CREATE USER
     public void createUser(String cpf, String name, String email, String phone, LocalDate birthDate, String accountType, String password) {
-        // CREATE USER
+
         User user = new User(
                 cpf,
                 name,

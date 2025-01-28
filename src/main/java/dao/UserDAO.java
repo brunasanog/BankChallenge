@@ -59,5 +59,4 @@ public class UserDAO extends BaseDAO {
             return null;
         });
     }
-
 }

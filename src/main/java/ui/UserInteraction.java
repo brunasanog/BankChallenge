@@ -418,7 +418,7 @@ public class UserInteraction {
         }
     }
 
-    //BANK STATEMENT
+    //----------------------------BANK STATEMENT----------------------------
     public void viewTransactions(Account account) {
         TransactionDAO transactionDAO = new TransactionDAO();
         List<String> formattedTransactions = transactionDAO.getFormattedTransactionsByAccountId(account.getId());

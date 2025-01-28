@@ -57,6 +57,4 @@ public abstract class BaseDAO {
     interface PreparedStatementSetter {
         void setValues(PreparedStatement stmt) throws SQLException;
     }
-
-
 }
